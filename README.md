@@ -1,8 +1,8 @@
-# PixelDex
+# SpindaDex
 
 A fan-made Pokémon wiki and Pokédex reference with a GBA/NDS pixel-art identity, covering all 9 generations (1025 Pokémon).
 
-![PixelDex Screenshot](assets/screenshot-home.png)
+![SpindaDex Screenshot](assets/screenshot-home.png)
 
 
 ## Screenshots
@@ -41,7 +41,7 @@ A fan-made Pokémon wiki and Pokédex reference with a GBA/NDS pixel-art identit
 ## Project Structure
 
 ```
-pixeldex/
+spindadex/
 ├── index.html          # Landing page with typewriter intro & featured Pokémon
 ├── pokedex.html        # Browse all Pokémon with search & filters
 ├── pokemon.html        # Detail page (reads ?id= from URL)
@@ -65,8 +65,8 @@ pixeldex/
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/pixeldex.git
-   cd pixeldex
+   git clone https://github.com/RizalRizzler/FinProjFE.git
+   cd FinProjFE
    ```
 
 2. Open `index.html` directly in your browser, or serve with a local server:

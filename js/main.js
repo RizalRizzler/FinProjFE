@@ -1,5 +1,5 @@
 /**
- * PixelDex - Shared JavaScript
+ * SpindaDex - Shared JavaScript
  * Handles: Skin toggle, theme toggle, favorites, mobile nav, footer, utilities
  */
 
@@ -10,7 +10,7 @@
   // Skin Management (GBA/NDS)
   // ==========================================================================
 
-  const SKIN_KEY = 'pixeldex-skin';
+  const SKIN_KEY = 'spindadex-skin';
   const DEFAULT_SKIN = 'gba';
   const VALID_SKINS = ['gba', 'nds'];
 
@@ -72,7 +72,7 @@
   // Theme Management (Day/Night)
   // ==========================================================================
 
-  const THEME_KEY = 'pixeldex-theme';
+  const THEME_KEY = 'spindadex-theme';
   const DEFAULT_THEME = 'day';
   const VALID_THEMES = ['day', 'night'];
 
@@ -137,7 +137,7 @@
   // Favorites Management
   // ==========================================================================
 
-  const FAVORITES_KEY = 'pixeldex-favorites';
+  const FAVORITES_KEY = 'spindadex-favorites';
 
   function getFavorites() {
     try {
@@ -530,7 +530,7 @@
   // Public API
   // ==========================================================================
 
-  window.PixelDex = {
+  window.SpindaDex = {
     getSkin,
     setSkin,
     toggleSkin,

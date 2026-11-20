@@ -1,5 +1,5 @@
 /**
- * PixelDex - Pokédex Page Logic
+ * SpindaDex - Pokédex Page Logic
  * Handles: Search, type filters, generation filters, favorites filter, card rendering
  */
 
@@ -96,7 +96,7 @@
       span.className = `type-badge ${type}`;
       span.style.fontSize = '10px';
       span.style.padding = '2px 8px';
-      span.textContent = window.PixelDex.capitalize(type);
+      span.textContent = window.SpindaDex.capitalize(type);
 
       label.appendChild(checkbox);
       label.appendChild(span);
@@ -163,7 +163,7 @@
 
   function attachEventListeners() {
     // Debounced search
-    const debouncedSearch = window.PixelDex.debounce(handleSearch, 150);
+    const debouncedSearch = window.SpindaDex.debounce(handleSearch, 150);
     elements.searchInput.addEventListener('input', debouncedSearch);
 
     elements.genFilter.addEventListener('change', handleGenChange);
@@ -176,7 +176,7 @@
   // ==========================================================================
 
   function applyFilters() {
-    const favorites = window.PixelDex.getFavorites();
+    const favorites = window.SpindaDex.getFavorites();
 
     filteredPokemon = window.POKEMON.filter(pokemon => {
       // Search filter
@@ -247,7 +247,7 @@
     grid.appendChild(fragment);
 
     // Initialize favorite buttons after rendering
-    window.PixelDex.initFavoriteButtons();
+    window.SpindaDex.initFavoriteButtons();
   }
 
   function createPokemonCard(pokemon) {
@@ -273,7 +273,7 @@
     });
 
     // Sprite URLs with fallback chain
-    const spriteUrls = window.PixelDex.getSpriteUrl(pokemon.id);
+    const spriteUrls = window.SpindaDex.getSpriteUrl(pokemon.id);
 
     // Build sprite fallback chain
     let spriteHtml = '';
@@ -283,7 +283,7 @@
     });
 
     // Create favorite button
-    const favBtn = window.PixelDex.createFavoriteButton(pokemon.id);
+    const favBtn = window.SpindaDex.createFavoriteButton(pokemon.id);
     favBtn.style.position = 'absolute';
     favBtn.style.top = 'var(--space-1)';
     favBtn.style.right = 'var(--space-1)';
@@ -294,10 +294,10 @@
         <div style="position: relative; width: 100%; aspect-ratio: 1;">
           ${spriteHtml}
         </div>
-        <h3 class="card-title">${window.PixelDex.capitalize(pokemon.name)}</h3>
+        <h3 class="card-title">${window.SpindaDex.capitalize(pokemon.name)}</h3>
         <p class="card-id">#${String(pokemon.id).padStart(3, '0')}</p>
         <div class="card-types">
-          ${pokemon.types.map(t => `<span class="type-badge ${t}">${window.PixelDex.capitalize(t)}</span>`).join('')}
+          ${pokemon.types.map(t => `<span class="type-badge ${t}">${window.SpindaDex.capitalize(t)}</span>`).join('')}
         </div>
       </div>
     `;
@@ -326,7 +326,7 @@
     }
 
     if (state.favoritesOnly) {
-      const favCount = window.PixelDex.getFavorites().size;
+      const favCount = window.SpindaDex.getFavorites().size;
       baseText += ` (${favCount} favorited)`;
     }
 

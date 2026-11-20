@@ -1,5 +1,5 @@
 /**
- * PixelDex - Pokémon Detail Page Logic
+ * SpindaDex - Pokémon Detail Page Logic
  * Handles: URL param parsing, detail rendering, prev/next navigation
  */
 
@@ -29,7 +29,7 @@
       return;
     }
 
-    const id = parseInt(window.PixelDex.getUrlParam('id'), 10);
+    const id = parseInt(window.SpindaDex.getUrlParam('id'), 10);
 
     if (!id || id < 1 || id > window.POKEMON.length) {
       showError('Invalid Pokémon ID. Please return to the <a href="pokedex.html">Pokédex</a>.');
@@ -54,7 +54,7 @@
     if (!currentPokemon || !container) return;
 
     const p = currentPokemon;
-    const spriteUrls = window.PixelDex.getSpriteUrl(p.id);
+    const spriteUrls = window.SpindaDex.getSpriteUrl(p.id);
 
     // Build sprite fallback chain
     let spriteHtml = '';
@@ -65,28 +65,28 @@
 
     // Stat bars
     const statsHtml = `
-      ${window.PixelDex.createStatBar('HP', p.stats.hp)}
-      ${window.PixelDex.createStatBar('Attack', p.stats.attack)}
-      ${window.PixelDex.createStatBar('Defense', p.stats.defense)}
-      ${window.PixelDex.createStatBar('Sp. Atk', p.stats.spatk)}
-      ${window.PixelDex.createStatBar('Sp. Def', p.stats.spdef)}
-      ${window.PixelDex.createStatBar('Speed', p.stats.speed)}
+      ${window.SpindaDex.createStatBar('HP', p.stats.hp)}
+      ${window.SpindaDex.createStatBar('Attack', p.stats.attack)}
+      ${window.SpindaDex.createStatBar('Defense', p.stats.defense)}
+      ${window.SpindaDex.createStatBar('Sp. Atk', p.stats.spatk)}
+      ${window.SpindaDex.createStatBar('Sp. Def', p.stats.spdef)}
+      ${window.SpindaDex.createStatBar('Speed', p.stats.speed)}
     `;
 
     // Abilities
     const abilitiesHtml = p.abilities.map(a => `
       <span class="type-badge ${a.hidden ? 'fairy' : 'normal'}" style="background: ${a.hidden ? 'var(--type-fairy)' : 'var(--type-normal)'};">
-        ${window.PixelDex.capitalize(a.name.replace('-', ' '))}${a.hidden ? ' (Hidden)' : ''}
+        ${window.SpindaDex.capitalize(a.name.replace('-', ' '))}${a.hidden ? ' (Hidden)' : ''}
       </span>
     `).join('');
 
     // Types
     const typesHtml = p.types.map(t => `
-      <span class="type-badge ${t}">${window.PixelDex.capitalize(t)}</span>
+      <span class="type-badge ${t}">${window.SpindaDex.capitalize(t)}</span>
     `).join('');
 
     // Favorite button for detail page
-    const favBtnHtml = `<button class="favorite-btn detail-fav-btn" data-favorite-btn data-pokemon-id="${p.id}" aria-label="${window.PixelDex.isFavorite(p.id) ? 'Remove from favorites' : 'Add to favorites'}" aria-pressed="${window.PixelDex.isFavorite(p.id)}"><span class="favorite-icon" aria-hidden="true">${window.PixelDex.isFavorite(p.id) ? '♥' : '♡'}</span></button>`;
+    const favBtnHtml = `<button class="favorite-btn detail-fav-btn" data-favorite-btn data-pokemon-id="${p.id}" aria-label="${window.SpindaDex.isFavorite(p.id) ? 'Remove from favorites' : 'Add to favorites'}" aria-pressed="${window.SpindaDex.isFavorite(p.id)}"><span class="favorite-icon" aria-hidden="true">${window.SpindaDex.isFavorite(p.id) ? '♥' : '♡'}</span></button>`;
 
     // Prev/Next buttons
     const prevId = currentIndex > 0 ? window.POKEMON[currentIndex - 1].id : null;
@@ -101,7 +101,7 @@
           <div class="detail-info">
             <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-2); width: 100%;">
               <div>
-                <h1 class="detail-name">${window.PixelDex.capitalize(p.name)}</h1>
+                <h1 class="detail-name">${window.SpindaDex.capitalize(p.name)}</h1>
                 <p class="detail-id">#${String(p.id).padStart(3, '0')} • ${p.genName} (Gen ${p.gen})</p>
                 <div class="detail-types">${typesHtml}</div>
               </div>
@@ -126,8 +126,8 @@
         <section class="detail-section" aria-labelledby="physical-heading">
           <h2 id="physical-heading" class="detail-section-title">Physical Data</h2>
           <div class="flex gap-3 flex-wrap" style="font-size: 14px;">
-            <div><strong>Height:</strong> ${window.PixelDex.formatHeight(p.height)}</div>
-            <div><strong>Weight:</strong> ${window.PixelDex.formatWeight(p.weight)}</div>
+            <div><strong>Height:</strong> ${window.SpindaDex.formatHeight(p.height)}</div>
+            <div><strong>Weight:</strong> ${window.SpindaDex.formatWeight(p.weight)}</div>
           </div>
         </section>
 
@@ -146,10 +146,10 @@
     `;
 
     // Initialize favorite button after rendering
-    window.PixelDex.initFavoriteButtons();
+    window.SpindaDex.initFavoriteButtons();
 
     // Update page title
-    document.title = `PixelDex - ${window.PixelDex.capitalize(p.name)} (#${String(p.id).padStart(3, '0')})`;
+    document.title = `SpindaDex - ${window.SpindaDex.capitalize(p.name)} (#${String(p.id).padStart(3, '0')})`;
   }
 
   function showError(message) {

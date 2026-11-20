@@ -1,5 +1,5 @@
 /**
- * PixelDex - Data Generator
+ * SpindaDex - Data Generator
  * Fetches Pokémon data from PokéAPI and generates js/data.js
  * Run with: node tools/build-data.js
  */
@@ -118,7 +118,7 @@ async function fetchPokemon(id) {
 
 // Main build function
 async function buildData() {
-  console.log('🔧 PixelDex Data Generator');
+  console.log('🔧 SpindaDex Data Generator');
   console.log('============================');
   console.log(`Fetching ${POKEMON_LIMIT} Pokémon from PokéAPI...\n`);
 
@@ -165,7 +165,7 @@ async function buildData() {
   console.log('\n📝 Writing js/data.js...');
 
   const output = `/**
- * PixelDex - Pokémon Data
+ * SpindaDex - Pokémon Data
  * Generated from PokéAPI (https://pokeapi.co/)
  * Total: ${pokemonList.length} Pokémon
  * Generated: ${new Date().toISOString()}

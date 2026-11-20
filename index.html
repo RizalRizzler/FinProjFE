@@ -3,14 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="PixelDex - A fan-made Pokémon wiki and Pokédex with GBA/NDS pixel art style">
-  <title>PixelDex - Home</title>
+  <meta name="description" content="SpindaDex - A fan-made Pokémon wiki and Pokédex with GBA/NDS pixel art style">
+  <title>SpindaDex - Home</title>
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body data-page="home">
   <header class="site-header">
     <div class="header-inner">
-      <h1 class="site-title"><a href="index.html">PIXELDEX</a></h1>
+      <h1 class="site-title"><a href="index.html">SPINDADEX</a></h1>
       <div data-navbar-placeholder></div>
     </div>
   </header>
@@ -33,7 +33,7 @@
 
       <!-- Navigation Cards -->
       <section class="nav-cards" aria-labelledby="explore-heading">
-        <h2 id="explore-heading" class="section-title">Explore PixelDex</h2>
+        <h2 id="explore-heading" class="section-title">Explore SpindaDex</h2>
         <div class="featured-grid">
           <a href="pokedex.html" class="link-card" role="listitem">
             <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-viii/icons/001.png" alt="" class="link-card-icon" loading="lazy">
@@ -65,18 +65,18 @@
       'use strict';
 
       // Typewriter text
-      const introText = "Welcome to PixelDex! Your pocket-sized Pokédex with retro GBA/NDS style. Choose your skin, browse the Pokédex, check type matchups, and catch 'em all!";
+      const introText = "Welcome to SpindaDex! Your pocket-sized Pokédex with retro GBA/NDS style. Choose your skin, browse the Pokédex, check type matchups, and spin 'em all!";
       const typewriterEl = document.getElementById('typewriter-text');
 
       // Start typewriter after a brief delay
       setTimeout(() => {
-        if (window.PixelDex && window.PixelDex.initTypewriter) {
-          window.PixelDex.initTypewriter(typewriterEl, introText, 25);
+        if (window.SpindaDex && window.SpindaDex.initTypewriter) {
+          window.SpindaDex.initTypewriter(typewriterEl, introText, 25);
         }
       }, 500);
 
-      // Featured Pokémon - show starter trio + Pikachu
-      const featuredIds = [1, 4, 7, 25]; // Bulbasaur, Charmander, Squirtle, Pikachu
+      // Featured Pokémon - Spinda (Hoenn #327) with its unique spot patterns
+      const featuredIds = [327]; // Spinda
       const featuredGrid = document.getElementById('featured-grid');
 
       if (featuredGrid && window.POKEMON) {
@@ -99,7 +99,7 @@
             }
           });
 
-          const spriteUrls = window.PixelDex.getSpriteUrl(pokemon.id);
+          const spriteUrls = window.SpindaDex.getSpriteUrl(pokemon.id);
           const spriteHtml = spriteUrls.map((url, i) =>
             `<img src="${url}" alt="${pokemon.name}" class="card-image" loading="lazy" ${i > 0 ? 'style="display:none"' : ''} onerror="this.style.display='none'; this.nextElementSibling?.style.display='block' || this.parentElement.querySelectorAll('img')[${i+1}]?.style.display='block'">`
           ).join('');
@@ -110,10 +110,10 @@
                 ${spriteHtml}
                 <img src="assets/placeholder.png" alt="" class="card-image" style="display:none" loading="lazy">
               </div>
-              <h3 class="card-title">${window.PixelDex.capitalize(pokemon.name)}</h3>
+              <h3 class="card-title">${window.SpindaDex.capitalize(pokemon.name)}</h3>
               <p class="card-id">#${String(pokemon.id).padStart(3, '0')}</p>
               <div class="card-types">
-                ${pokemon.types.map(t => `<span class="type-badge ${t}">${window.PixelDex.capitalize(t)}</span>`).join('')}
+                ${pokemon.types.map(t => `<span class="type-badge ${t}">${window.SpindaDex.capitalize(t)}</span>`).join('')}
               </div>
             </div>
           `;

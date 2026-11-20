@@ -1,5 +1,5 @@
 /**
- * PixelDex - Pokémon Data
+ * SpindaDex - Pokémon Data
  * Generated from PokéAPI (https://pokeapi.co/)
  * Total: 1025 Pokémon
  * Generated: 2026-11-19T17:10:59.020Z

@@ -1,5 +1,5 @@
 /**
- * PixelDex - Type Chart Logic
+ * SpindaDex - Type Chart Logic
  * 18-type effectiveness matrix (modern with Fairy)
  * Click a type to highlight strengths/weaknesses/immunities
  */
@@ -79,7 +79,7 @@
       const th = document.createElement('th');
       th.scope = 'col';
       th.className = 'type-chart-header';
-      th.innerHTML = `<span class="type-badge ${type}" style="font-size: 9px; padding: 2px 6px;">${window.PixelDex.capitalize(type)}</span>`;
+      th.innerHTML = `<span class="type-badge ${type}" style="font-size: 9px; padding: 2px 6px;">${window.SpindaDex.capitalize(type)}</span>`;
       thead.appendChild(th);
     });
 
@@ -92,7 +92,7 @@
       th.scope = 'row';
       th.dataset.type = atkType;
       th.style.cursor = 'pointer';
-      th.innerHTML = `<span class="type-badge ${atkType}">${window.PixelDex.capitalize(atkType)}</span>`;
+      th.innerHTML = `<span class="type-badge ${atkType}">${window.SpindaDex.capitalize(atkType)}</span>`;
       th.addEventListener('click', () => toggleHighlight(atkType));
       th.addEventListener('keydown', (e) => {
         if (e.key === 'Enter' || e.key === ' ') {
@@ -103,7 +103,7 @@
       th.setAttribute('tabindex', '0');
       th.setAttribute('role', 'button');
       th.setAttribute('aria-pressed', 'false');
-      th.setAttribute('aria-label', `Highlight ${window.PixelDex.capitalize(atkType)} matchups`);
+      th.setAttribute('aria-label', `Highlight ${window.SpindaDex.capitalize(atkType)} matchups`);
       tr.appendChild(th);
 
       // Cells for each defending type
@@ -115,7 +115,7 @@
         td.dataset.defending = defType;
         td.textContent = formatMultiplier(multiplier);
         td.setAttribute('role', 'gridcell');
-        td.setAttribute('aria-label', `${window.PixelDex.capitalize(atkType)} vs ${window.PixelDex.capitalize(defType)}: ${window.PixelDex.getEffectivenessLabel(multiplier)}`);
+        td.setAttribute('aria-label', `${window.SpindaDex.capitalize(atkType)} vs ${window.SpindaDex.capitalize(defType)}: ${window.SpindaDex.getEffectivenessLabel(multiplier)}`);
         tr.appendChild(td);
       });
 
@@ -220,19 +220,19 @@
       TYPE_ORDER.forEach(otherType => {
         // Attacking: highlightedType -> otherType
         const atkMult = getEffectiveness(highlightedType, otherType);
-        if (atkMult === 2) superEffectiveAtk.push(window.PixelDex.capitalize(otherType));
-        else if (atkMult === 0.5) notVeryEffectiveAtk.push(window.PixelDex.capitalize(otherType));
-        else if (atkMult === 0) noEffectAtk.push(window.PixelDex.capitalize(otherType));
+        if (atkMult === 2) superEffectiveAtk.push(window.SpindaDex.capitalize(otherType));
+        else if (atkMult === 0.5) notVeryEffectiveAtk.push(window.SpindaDex.capitalize(otherType));
+        else if (atkMult === 0) noEffectAtk.push(window.SpindaDex.capitalize(otherType));
 
         // Defending: otherType -> highlightedType
         const defMult = getEffectiveness(otherType, highlightedType);
-        if (defMult === 2) weakTo.push(window.PixelDex.capitalize(otherType));
-        else if (defMult === 0.5) resistantTo.push(window.PixelDex.capitalize(otherType));
-        else if (defMult === 0) immuneTo.push(window.PixelDex.capitalize(otherType));
+        if (defMult === 2) weakTo.push(window.SpindaDex.capitalize(otherType));
+        else if (defMult === 0.5) resistantTo.push(window.SpindaDex.capitalize(otherType));
+        else if (defMult === 0) immuneTo.push(window.SpindaDex.capitalize(otherType));
       });
 
       hintEl.innerHTML = `
-        <strong>${window.PixelDex.capitalize(highlightedType)}</strong><br>
+        <strong>${window.SpindaDex.capitalize(highlightedType)}</strong><br>
         <em>Attacking:</em> Super Effective vs ${superEffectiveAtk.join(', ') || '—'} | Not Very Effective vs ${notVeryEffectiveAtk.join(', ') || '—'} | No Effect vs ${noEffectAtk.join(', ') || '—'}<br>
         <em>Defending:</em> Weak to ${weakTo.join(', ') || '—'} | Resistant to ${resistantTo.join(', ') || '—'} | Immune to ${immuneTo.join(', ') || '—'}
       `;
