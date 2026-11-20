@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en" data-skin="gba">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="PixelDex - A fan-made Pokémon wiki and Pokédex with GBA/NDS pixel art style">
+  <title>PixelDex - Home</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body data-page="home">
+  <header class="site-header">
+    <div class="header-inner">
+      <h1 class="site-title"><a href="index.html">PIXELDEX</a></h1>
+      <div data-navbar-placeholder></div>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <div class="container">
+      <!-- Typewriter Dialogue Intro -->
+      <section class="dialogue-box" aria-live="polite">
+        <p class="dialogue-text" id="typewriter-text"></p>
+        <span class="dialogue-arrow" aria-hidden="true">▼</span>
+      </section>
+
+      <!-- Featured Pokémon -->
+      <section class="featured-section" aria-labelledby="featured-heading">
+        <h2 id="featured-heading" class="section-title">Featured Pokémon</h2>
+        <div class="featured-grid" id="featured-grid" role="list">
+          <!-- Populated by JS -->
+        </div>
+      </section>
+
+      <!-- Navigation Cards -->
+      <section class="nav-cards" aria-labelledby="explore-heading">
+        <h2 id="explore-heading" class="section-title">Explore PixelDex</h2>
+        <div class="featured-grid">
+          <a href="pokedex.html" class="link-card" role="listitem">
+            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-viii/icons/001.png" alt="" class="link-card-icon" loading="lazy">
+            <h3 class="link-card-title">Pokédex</h3>
+            <p class="link-card-desc">Browse all 1025 Pokémon with search, type & generation filters</p>
+          </a>
+          <a href="pokemon.html?id=1" class="link-card" role="listitem">
+            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-viii/icons/025.png" alt="" class="link-card-icon" loading="lazy">
+            <h3 class="link-card-title">Pokémon Detail</h3>
+            <p class="link-card-desc">View stats, abilities, types & more for any Pokémon</p>
+          </a>
+          <a href="types.html" class="link-card" role="listitem">
+            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-viii/icons/150.png" alt="" class="link-card-icon" loading="lazy">
+            <h3 class="link-card-title">Type Chart</h3>
+            <p class="link-card-desc">Interactive 18-type effectiveness matrix with highlighting</p>
+          </a>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer data-footer-placeholder></footer>
+
+  <script src="js/data.js"></script>
+  <script src="js/main.js"></script>
+  <script>
+    // Home page specific logic
+    (function() {
+      'use strict';
+
+      // Typewriter text
+      const introText = "Welcome to PixelDex! Your pocket-sized Pokédex with retro GBA/NDS style. Choose your skin, browse the Pokédex, check type matchups, and catch 'em all!";
+      const typewriterEl = document.getElementById('typewriter-text');
+
+      // Start typewriter after a brief delay
+      setTimeout(() => {
+        if (window.PixelDex && window.PixelDex.initTypewriter) {
+          window.PixelDex.initTypewriter(typewriterEl, introText, 25);
+        }
+      }, 500);
+
+      // Featured Pokémon - show starter trio + Pikachu
+      const featuredIds = [1, 4, 7, 25]; // Bulbasaur, Charmander, Squirtle, Pikachu
+      const featuredGrid = document.getElementById('featured-grid');
+
+      if (featuredGrid && window.POKEMON) {
+        featuredIds.forEach(id => {
+          const pokemon = window.POKEMON.find(p => p.id === id);
+          if (!pokemon) return;
+
+          const card = document.createElement('article');
+          card.className = 'card';
+          card.style.cursor = 'pointer';
+          card.addEventListener('click', () => {
+            window.location.href = `pokemon.html?id=${pokemon.id}`;
+          });
+          card.setAttribute('role', 'listitem');
+          card.setAttribute('tabindex', '0');
+          card.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              window.location.href = `pokemon.html?id=${pokemon.id}`;
+            }
+          });
+
+          const spriteUrls = window.PixelDex.getSpriteUrl(pokemon.id);
+          const spriteHtml = spriteUrls.map((url, i) =>
+            `<img src="${url}" alt="${pokemon.name}" class="card-image" loading="lazy" ${i > 0 ? 'style="display:none"' : ''} onerror="this.style.display='none'; this.nextElementSibling?.style.display='block' || this.parentElement.querySelectorAll('img')[${i+1}]?.style.display='block'">`
+          ).join('');
+
+          card.innerHTML = `
+            <div class="card-inner">
+              <div style="position: relative; width: 100%; aspect-ratio: 1;">
+                ${spriteHtml}
+                <img src="assets/placeholder.png" alt="" class="card-image" style="display:none" loading="lazy">
+              </div>
+              <h3 class="card-title">${window.PixelDex.capitalize(pokemon.name)}</h3>
+              <p class="card-id">#${String(pokemon.id).padStart(3, '0')}</p>
+              <div class="card-types">
+                ${pokemon.types.map(t => `<span class="type-badge ${t}">${window.PixelDex.capitalize(t)}</span>`).join('')}
+              </div>
+            </div>
+          `;
+          featuredGrid.appendChild(card);
+        });
+      }
+    })();
+  </script>
+</body>
+</html>

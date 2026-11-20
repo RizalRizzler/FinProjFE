@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en" data-skin="gba">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="PixelDex - Type Effectiveness Chart">
+  <title>PixelDex - Type Chart</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body data-page="types">
+  <header class="site-header">
+    <div class="header-inner">
+      <h1 class="site-title"><a href="index.html">PIXELDEX</a></h1>
+      <div data-navbar-placeholder></div>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <div class="container">
+      <header class="page-header">
+        <h1>Type Effectiveness Chart</h1>
+        <p style="color: var(--color-text-muted); margin-top: var(--space-1);">Click a type to highlight strengths, weaknesses, and immunities</p>
+      </header>
+
+      <!-- Legend -->
+      <section class="legend-section" style="margin-bottom: var(--space-3); padding: var(--space-2); background: var(--color-panel); border: 2px solid var(--color-border); box-shadow: var(--shadow-pixel);">
+        <h2 class="section-title" style="margin-bottom: var(--space-2);">Legend</h2>
+        <div style="display: flex; flex-wrap: wrap; gap: var(--space-2); align-items: center; font-size: 12px;">
+          <div style="display: flex; align-items: center; gap: 6px;">
+            <span style="display: inline-block; width: 20px; height: 20px; background: var(--type-grass); border: 2px solid var(--color-border);"></span>
+            <span>Super Effective (2×)</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 6px;">
+            <span style="display: inline-block; width: 20px; height: 20px; background: var(--type-fire); border: 2px solid var(--color-border);"></span>
+            <span>Not Very Effective (½×)</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 6px;">
+            <span style="display: inline-block; width: 20px; height: 20px; background: var(--type-ghost); border: 2px solid var(--color-border);"></span>
+            <span>No Effect (0×)</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 6px;">
+            <span style="display: inline-block; width: 20px; height: 20px; background: var(--color-panel); border: 2px solid var(--color-border);"></span>
+            <span>Normal (1×)</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Type Chart -->
+      <section class="type-chart-section" aria-labelledby="chart-heading">
+        <h2 id="chart-heading" class="sr-only">Type Effectiveness Matrix</h2>
+        <div class="type-chart-container" role="region" aria-label="Type effectiveness chart" tabindex="0">
+          <table class="type-chart" id="type-chart" role="grid">
+            <thead>
+              <tr>
+                <th class="type-chart-header" scope="col">Defending →<br>Attacking ↓</th>
+                <!-- Column headers populated by JS -->
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Rows populated by JS -->
+            </tbody>
+          </table>
+        </div>
+        <p id="chart-hint" style="margin-top: var(--space-2); font-size: 12px; color: var(--color-text-muted); text-align: center;">
+          Click a type name to highlight its matchups. Click again or click elsewhere to clear.
+        </p>
+      </section>
+    </div>
+  </main>
+
+  <footer data-footer-placeholder></footer>
+
+  <script src="js/data.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/types.js"></script>
+</body>
+</html>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" data-skin="gba">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="PixelDex - Pokémon Detail">
+  <title>PixelDex - Pokémon Detail</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body data-page="pokemon">
+  <header class="site-header">
+    <div class="header-inner">
+      <h1 class="site-title"><a href="index.html">PIXELDEX</a></h1>
+      <div data-navbar-placeholder></div>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <div class="container">
+      <div id="pokemon-detail">
+        <!-- Loading state -->
+        <div class="text-center" style="padding: var(--space-6);">
+          <div class="loading" aria-hidden="true"></div>
+          <p class="mt-2" style="color: var(--color-text-muted);">Loading Pokémon data...</p>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer data-footer-placeholder></footer>
+
+  <script src="js/data.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/pokemon.js"></script>
+</body>
+</html>

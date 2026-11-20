@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en" data-skin="gba">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="PixelDex Pokédex - Browse all 1025 Pokémon with search and filters">
+  <title>PixelDex - Pokédex</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body data-page="pokedex">
+  <header class="site-header">
+    <div class="header-inner">
+      <h1 class="site-title"><a href="index.html">PIXELDEX</a></h1>
+      <div data-navbar-placeholder></div>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <div class="container">
+      <header class="page-header">
+        <h1>Pokédex</h1>
+        <p style="color: var(--color-text-muted); margin-top: var(--space-1);">Browse all 1025 Pokémon</p>
+      </header>
+
+      <!-- Search & Filters -->
+      <section class="filters-section" aria-labelledby="filters-heading">
+        <h2 id="filters-heading" class="sr-only">Filters</h2>
+
+        <div class="search-wrapper" style="margin-bottom: var(--space-2);">
+          <svg class="search-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"></circle>
+            <path d="M21 21l-4.35-4.35"></path>
+          </svg>
+          <input type="search" class="input-field search-input" id="search-input" placeholder="Search Pokémon by name..." aria-label="Search Pokémon" autocomplete="off">
+        </div>
+
+        <div class="filters-row" style="display: flex; flex-wrap: wrap; gap: var(--space-2); align-items: flex-end; margin-bottom: var(--space-2);">
+          <!-- Type Filter -->
+          <div class="input-group" style="flex: 1; min-width: 200px;">
+            <label class="input-label" for="type-filter">Type</label>
+            <div class="checkbox-group" id="type-filter" role="group" aria-label="Filter by type"></div>
+          </div>
+
+          <!-- Generation Filter -->
+          <div class="input-group" style="min-width: 180px;">
+            <label class="input-label" for="gen-filter">Generation</label>
+            <select class="input-field select-field" id="gen-filter" aria-label="Filter by generation">
+              <option value="">All Generations</option>
+            </select>
+          </div>
+
+          <!-- Clear Button -->
+          <button class="btn btn-secondary" id="clear-filters" style="height: 38px;">Clear</button>
+        </div>
+
+        <p class="results-count" id="results-count" aria-live="polite">Showing 1025 Pokémon</p>
+      </section>
+
+      <!-- Pokédex Grid -->
+      <section class="pokedex-section" aria-labelledby="pokedex-heading">
+        <h2 id="pokedex-heading" class="sr-only">Pokémon List</h2>
+        <div class="pokedex-grid" id="pokedex-grid" role="list">
+          <!-- Populated by JS -->
+        </div>
+        <div class="empty-state hidden" id="empty-state">
+          <img src="assets/placeholder.png" alt="" class="empty-state-icon">
+          <p>No Pokémon found matching your filters.</p>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer data-footer-placeholder></footer>
+
+  <script src="js/data.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/pokedex.js"></script>
+</body>
+</html>
