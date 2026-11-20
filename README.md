@@ -4,6 +4,7 @@ A fan-made Pokémon wiki and Pokédex reference with a GBA/NDS pixel-art identit
 
 ![PixelDex Screenshot](assets/screenshot-home.png)
 
+
 ## Screenshots
 
 | Home | Pokédex | Pokémon Detail | Type Chart |
