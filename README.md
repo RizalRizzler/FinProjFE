@@ -4,11 +4,6 @@ A fan-made Pokémon wiki and Pokédex reference with a GBA/NDS pixel-art identit
 
 ![PixelDex Screenshot](assets/screenshot-home.png)
 
-## Live Demo
-
-**[https://yourusername.github.io/pixeldex/](https://yourusername.github.io/pixeldex/)**
-
-*(Replace `yourusername` with your actual GitHub username after deployment)*
 
 ## Screenshots
 
