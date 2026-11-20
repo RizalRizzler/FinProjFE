@@ -164,6 +164,135 @@ html[data-skin="nds"] {
 }
 
 /* ==========================================================================
+   DAY/NIGHT THEME OVERRIDES
+   ========================================================================== */
+/* Night mode applies on top of current skin (GBA or NDS) */
+
+html[data-theme="night"] {
+  /* GBA Night - Dark emerald/forest */
+  --color-bg: #182818;
+  --color-bg-dark: #102010;
+  --color-bg-light: #203820;
+  --color-panel: #203020;
+  --color-panel-dark: #182818;
+  --color-border: #487848;
+  --color-border-dark: #386038;
+  --color-highlight: #284028;
+  --color-shadow: #081808;
+  --color-text: #e8f0e8;
+  --color-text-muted: #88a888;
+  --color-text-inverse: #182818;
+  --color-primary: #68a868;
+  --color-primary-hover: #88c888;
+  --color-primary-light: #284028;
+  --color-accent: #e86060;
+  --color-accent-hover: #f88080;
+  --color-link: #88a8e8;
+  --color-link-hover: #a8c8f8;
+
+  /* Type colors (GBA Night - muted) */
+  --type-normal: #888868;
+  --type-fire: #d07030;
+  --type-water: #5880e0;
+  --type-electric: #d8b030;
+  --type-grass: #68a850;
+  --type-ice: #88c8c8;
+  --type-fighting: #a03028;
+  --type-poison: #904090;
+  --type-ground: #c0a068;
+  --type-flying: #9880e0;
+  --type-psychic: #d85888;
+  --type-bug: #98a820;
+  --type-rock: #a89038;
+  --type-ghost: #605088;
+  --type-dragon: #6038e8;
+  --type-dark: #605048;
+  --type-steel: #a8a8c0;
+  --type-fairy: #d898d8;
+
+  /* Stat bar colors (Night) */
+  --stat-hp: #d04040;
+  --stat-attack: #d07030;
+  --stat-defense: #d8b030;
+  --stat-spatk: #d04040;
+  --stat-spdef: #68a850;
+  --stat-speed: #d8b030;
+
+  /* Dialogue box (Night) */
+  --dialogue-bg: #203020;
+  --dialogue-border: #487848;
+  --dialogue-text: #e8f0e8;
+  --cursor-color: #68a868;
+}
+
+/* NDS Night overrides (more specific) */
+html[data-skin="nds"][data-theme="night"] {
+  /* NDS Night - Dark silver/space */
+  --color-bg: #181828;
+  --color-bg-dark: #101020;
+  --color-bg-light: #202038;
+  --color-panel: #202030;
+  --color-panel-dark: #181828;
+  --color-border: #585878;
+  --color-border-dark: #484868;
+  --color-highlight: #282838;
+  --color-shadow: #080818;
+  --color-text: #e0e0f0;
+  --color-text-muted: #8888a8;
+  --color-text-inverse: #181828;
+  --color-primary: #8888a8;
+  --color-primary-hover: #a8a8c8;
+  --color-primary-light: #282838;
+  --color-accent: #c888c8;
+  --color-accent-hover: #e8a8e8;
+  --color-link: #7878d8;
+  --color-link-hover: #9898f8;
+
+  /* Type colors (NDS Night - muted pastel) */
+  --type-normal: #a8a890;
+  --type-fire: #d88848;
+  --type-water: #7898e8;
+  --type-electric: #d8c048;
+  --type-grass: #88c070;
+  --type-ice: #a0d0d0;
+  --type-fighting: #c04840;
+  --type-poison: #a858a8;
+  --type-ground: #d8c088;
+  --type-flying: #b0a8e8;
+  --type-psychic: #e878a8;
+  --type-bug: #a8b830;
+  --type-rock: #b8a858;
+  --type-ghost: #7870a8;
+  --type-dragon: #7858e8;
+  --type-dark: #786860;
+  --type-steel: #b8b8d0;
+  --type-fairy: #e8a8e8;
+
+  /* Stat bar colors (NDS Night) */
+  --stat-hp: #e05858;
+  --stat-attack: #e89848;
+  --stat-defense: #e8d048;
+  --stat-spatk: #e05858;
+  --stat-spdef: #88c070;
+  --stat-speed: #e8d048;
+
+  /* Dialogue box (NDS Night) */
+  --dialogue-bg: #202030;
+  --dialogue-border: #585878;
+  --dialogue-text: #e0e0f0;
+  --cursor-color: #8888a8;
+}
+
+/* Background pattern adjustment for night mode */
+html[data-theme="night"] body {
+  background-image:
+    radial-gradient(circle at 0 0, var(--color-bg-light) 1px, transparent 1px),
+    radial-gradient(circle at 0 0, var(--color-bg-light) 1px, transparent 1px);
+  background-size: 16px 16px;
+  background-position: 0 0, 8px 8px;
+}
+
+/* ==========================================================================
    Base Reset & Typography
    ========================================================================== */
 
@@ -427,6 +556,69 @@ html[data-skin="nds"] .skin-toggle-btn::after {
   background: var(--color-primary);
 }
 
+/* Theme Toggle (Day/Night) */
+.theme-toggle {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: var(--space-1) var(--space-2);
+  background: var(--color-panel-dark);
+  border: 2px solid var(--color-border);
+  box-shadow: var(--shadow-pixel);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.theme-toggle:hover {
+  box-shadow: var(--shadow-pixel-hover);
+  transform: translate(-2px, -2px);
+}
+
+.theme-toggle:active {
+  box-shadow: none;
+  transform: translate(0, 0);
+}
+
+.theme-toggle-label {
+  font-size: 12px;
+  line-height: 1;
+}
+
+.theme-toggle-btn {
+  width: 28px;
+  height: 18px;
+  background: var(--color-bg);
+  border: 2px solid var(--color-border);
+  border-radius: 9px;
+  position: relative;
+  cursor: pointer;
+}
+
+.theme-toggle-btn::after {
+  content: "";
+  position: absolute;
+  top: 1px;
+  left: 1px;
+  width: 14px;
+  height: 14px;
+  background: var(--color-accent);
+  border-radius: 50%;
+  transition: transform var(--transition-fast);
+  box-shadow: 1px 1px 0 0 var(--color-border-dark);
+}
+
+html[data-theme="night"] .theme-toggle-btn::after {
+  transform: translateX(10px);
+  background: var(--color-primary);
+}
+
+/* Nav Controls Container */
+.nav-controls {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+
 /* Hamburger Menu */
 .hamburger {
   display: none;
@@ -498,9 +690,18 @@ html[data-skin="nds"] .skin-toggle-btn::after {
     padding: var(--space-2) var(--space-3);
   }
 
-  .skin-toggle {
+  .nav-controls {
+    display: flex;
     justify-content: center;
+    gap: var(--space-1);
     margin-top: var(--space-2);
+    padding-top: var(--space-2);
+    border-top: 2px solid var(--color-border);
+  }
+
+  .skin-toggle,
+  .theme-toggle {
+    justify-content: center;
   }
 }
 
@@ -571,6 +772,53 @@ html[data-skin="nds"] .skin-toggle-btn::after {
 .btn-lg {
   padding: var(--space-2) var(--space-4);
   font-size: 14px;
+}
+
+/* Favorite Button */
+.favorite-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background: var(--color-panel-dark);
+  border: 2px solid var(--color-border);
+  box-shadow: var(--shadow-pixel);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  border-radius: 4px;
+  padding: 0;
+}
+
+.favorite-btn:hover {
+  box-shadow: var(--shadow-pixel-hover);
+  transform: translate(-2px, -2px);
+  background: var(--color-bg);
+}
+
+.favorite-btn:active {
+  box-shadow: none;
+  transform: translate(0, 0);
+}
+
+.favorite-btn.favorited {
+  background: var(--color-accent);
+  border-color: var(--color-accent-hover);
+}
+
+.favorite-btn.favorited:hover {
+  background: var(--color-accent-hover);
+}
+
+.favorite-icon {
+  font-size: 16px;
+  line-height: 1;
+  color: var(--color-text);
+  transition: color var(--transition-fast);
+}
+
+.favorite-btn.favorited .favorite-icon {
+  color: var(--color-text-inverse);
 }
 
 /* ==========================================================================

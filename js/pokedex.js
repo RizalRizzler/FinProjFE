@@ -1,6 +1,6 @@
 /**
  * PixelDex - Pokédex Page Logic
- * Handles: Search, type filters, generation filters, card rendering
+ * Handles: Search, type filters, generation filters, favorites filter, card rendering
  */
 
 (function() {
@@ -35,7 +35,8 @@
   let state = {
     search: '',
     types: new Set(),
-    generation: ''
+    generation: '',
+    favoritesOnly: false
   };
 
   let filteredPokemon = [];
@@ -48,6 +49,7 @@
     searchInput: document.getElementById('search-input'),
     typeFilter: document.getElementById('type-filter'),
     genFilter: document.getElementById('gen-filter'),
+    favoritesFilter: document.getElementById('favorites-filter'),
     clearBtn: document.getElementById('clear-filters'),
     grid: document.getElementById('pokedex-grid'),
     emptyState: document.getElementById('empty-state'),
@@ -138,13 +140,20 @@
     applyFilters();
   }
 
+  function handleFavoritesChange(e) {
+    state.favoritesOnly = e.target.checked;
+    applyFilters();
+  }
+
   function handleClear() {
     state.search = '';
     state.types.clear();
     state.generation = '';
+    state.favoritesOnly = false;
 
     elements.searchInput.value = '';
     elements.genFilter.value = '';
+    elements.favoritesFilter.checked = false;
     elements.typeFilter.querySelectorAll('input[type="checkbox"]').forEach(cb => {
       cb.checked = false;
     });
@@ -158,6 +167,7 @@
     elements.searchInput.addEventListener('input', debouncedSearch);
 
     elements.genFilter.addEventListener('change', handleGenChange);
+    elements.favoritesFilter.addEventListener('change', handleFavoritesChange);
     elements.clearBtn.addEventListener('click', handleClear);
   }
 
@@ -166,6 +176,8 @@
   // ==========================================================================
 
   function applyFilters() {
+    const favorites = window.PixelDex.getFavorites();
+
     filteredPokemon = window.POKEMON.filter(pokemon => {
       // Search filter
       if (state.search && !pokemon.name.toLowerCase().includes(state.search)) {
@@ -187,6 +199,11 @@
 
       // Generation filter
       if (state.generation && pokemon.gen !== state.generation) {
+        return false;
+      }
+
+      // Favorites filter
+      if (state.favoritesOnly && !favorites.has(pokemon.id)) {
         return false;
       }
 
@@ -228,6 +245,9 @@
     });
 
     grid.appendChild(fragment);
+
+    // Initialize favorite buttons after rendering
+    window.PixelDex.initFavoriteButtons();
   }
 
   function createPokemonCard(pokemon) {
@@ -236,9 +256,12 @@
     article.setAttribute('role', 'listitem');
     article.style.textDecoration = 'none';
     article.style.color = 'inherit';
+    article.style.position = 'relative'; // For absolute positioning of favorite button
 
-    // Link to detail page
-    article.addEventListener('click', () => {
+    // Link to detail page (on card click, but not on favorite button)
+    article.addEventListener('click', (e) => {
+      // Don't navigate if clicking the favorite button
+      if (e.target.closest('[data-favorite-btn]')) return;
       window.location.href = `pokemon.html?id=${pokemon.id}`;
     });
     article.setAttribute('tabindex', '0');
@@ -259,6 +282,13 @@
       spriteHtml += `<img src="${url}" alt="${pokemon.name}" class="card-image" loading="lazy" ${i > 0 ? 'style="display:none"' : ''} onerror="this.style.display='none'; ${isLast ? '' : `this.parentElement.querySelectorAll('img')[${i+1}].style.display='block'`}">`;
     });
 
+    // Create favorite button
+    const favBtn = window.PixelDex.createFavoriteButton(pokemon.id);
+    favBtn.style.position = 'absolute';
+    favBtn.style.top = 'var(--space-1)';
+    favBtn.style.right = 'var(--space-1)';
+    favBtn.style.zIndex = '10';
+
     article.innerHTML = `
       <div class="card-inner">
         <div style="position: relative; width: 100%; aspect-ratio: 1;">
@@ -272,6 +302,12 @@
       </div>
     `;
 
+    // Append favorite button to card-inner
+    const cardInner = article.querySelector('.card-inner');
+    if (cardInner) {
+      cardInner.appendChild(favBtn);
+    }
+
     return article;
   }
 
@@ -282,11 +318,19 @@
     const total = window.POKEMON?.length || 0;
     const showing = filteredPokemon.length;
 
-    if (showing === total && !state.search && state.types.size === 0 && !state.generation) {
-      count.textContent = `Showing all ${total} Pokémon`;
+    let baseText = '';
+    if (showing === total && !state.search && state.types.size === 0 && !state.generation && !state.favoritesOnly) {
+      baseText = `Showing all ${total} Pokémon`;
     } else {
-      count.textContent = `Showing ${showing} of ${total} Pokémon`;
+      baseText = `Showing ${showing} of ${total} Pokémon`;
     }
+
+    if (state.favoritesOnly) {
+      const favCount = window.PixelDex.getFavorites().size;
+      baseText += ` (${favCount} favorited)`;
+    }
+
+    count.textContent = baseText;
   }
 
   // ==========================================================================

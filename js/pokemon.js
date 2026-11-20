@@ -85,6 +85,9 @@
       <span class="type-badge ${t}">${window.PixelDex.capitalize(t)}</span>
     `).join('');
 
+    // Favorite button for detail page
+    const favBtnHtml = `<button class="favorite-btn detail-fav-btn" data-favorite-btn data-pokemon-id="${p.id}" aria-label="${window.PixelDex.isFavorite(p.id) ? 'Remove from favorites' : 'Add to favorites'}" aria-pressed="${window.PixelDex.isFavorite(p.id)}"><span class="favorite-icon" aria-hidden="true">${window.PixelDex.isFavorite(p.id) ? '♥' : '♡'}</span></button>`;
+
     // Prev/Next buttons
     const prevId = currentIndex > 0 ? window.POKEMON[currentIndex - 1].id : null;
     const nextId = currentIndex < window.POKEMON.length - 1 ? window.POKEMON[currentIndex + 1].id : null;
@@ -96,9 +99,14 @@
             ${spriteHtml}
           </div>
           <div class="detail-info">
-            <h1 class="detail-name">${window.PixelDex.capitalize(p.name)}</h1>
-            <p class="detail-id">#${String(p.id).padStart(3, '0')} • ${p.genName} (Gen ${p.gen})</p>
-            <div class="detail-types">${typesHtml}</div>
+            <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-2); width: 100%;">
+              <div>
+                <h1 class="detail-name">${window.PixelDex.capitalize(p.name)}</h1>
+                <p class="detail-id">#${String(p.id).padStart(3, '0')} • ${p.genName} (Gen ${p.gen})</p>
+                <div class="detail-types">${typesHtml}</div>
+              </div>
+              ${favBtnHtml}
+            </div>
           </div>
         </header>
 
@@ -136,6 +144,9 @@
         </nav>
       </article>
     `;
+
+    // Initialize favorite button after rendering
+    window.PixelDex.initFavoriteButtons();
 
     // Update page title
     document.title = `PixelDex - ${window.PixelDex.capitalize(p.name)} (#${String(p.id).padStart(3, '0')})`;

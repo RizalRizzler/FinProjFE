@@ -1,13 +1,13 @@
 /**
  * PixelDex - Shared JavaScript
- * Handles: Skin toggle, mobile nav, footer, utilities
+ * Handles: Skin toggle, theme toggle, favorites, mobile nav, footer, utilities
  */
 
 (function() {
   'use strict';
 
   // ==========================================================================
-  // Skin Management
+  // Skin Management (GBA/NDS)
   // ==========================================================================
 
   const SKIN_KEY = 'pixeldex-skin';
@@ -69,6 +69,168 @@
   }
 
   // ==========================================================================
+  // Theme Management (Day/Night)
+  // ==========================================================================
+
+  const THEME_KEY = 'pixeldex-theme';
+  const DEFAULT_THEME = 'day';
+  const VALID_THEMES = ['day', 'night'];
+
+  function getTheme() {
+    try {
+      const stored = localStorage.getItem(THEME_KEY);
+      if (stored && VALID_THEMES.includes(stored)) {
+        return stored;
+      }
+    } catch (e) {
+      // localStorage unavailable
+    }
+    return DEFAULT_THEME;
+  }
+
+  function setTheme(theme) {
+    if (!VALID_THEMES.includes(theme)) return false;
+    try {
+      localStorage.setItem(THEME_KEY, theme);
+    } catch (e) {
+      // Ignore
+    }
+    document.documentElement.setAttribute('data-theme', theme);
+    updateThemeToggleUI(theme);
+    return true;
+  }
+
+  function toggleTheme() {
+    const current = getTheme();
+    const next = current === 'day' ? 'night' : 'day';
+    setTheme(next);
+  }
+
+  function updateThemeToggleUI(theme) {
+    const toggles = document.querySelectorAll('[data-theme-toggle]');
+    toggles.forEach(toggle => {
+      toggle.setAttribute('aria-pressed', theme === 'night');
+      const nextTheme = theme === 'day' ? 'Night' : 'Day';
+      toggle.setAttribute('aria-label', `Switch to ${nextTheme} mode`);
+      const label = toggle.querySelector('.theme-toggle-label');
+      if (label) {
+        label.textContent = theme === 'day' ? '☀' : '☾';
+      }
+      const btn = toggle.querySelector('.theme-toggle-btn');
+      if (btn) {
+        btn.setAttribute('aria-label', theme === 'day' ? 'Switch to night mode' : 'Switch to day mode');
+      }
+    });
+  }
+
+  function initTheme() {
+    const theme = getTheme();
+    document.documentElement.setAttribute('data-theme', theme);
+    updateThemeToggleUI(theme);
+
+    document.querySelectorAll('[data-theme-toggle]').forEach(btn => {
+      btn.addEventListener('click', toggleTheme);
+    });
+  }
+
+  // ==========================================================================
+  // Favorites Management
+  // ==========================================================================
+
+  const FAVORITES_KEY = 'pixeldex-favorites';
+
+  function getFavorites() {
+    try {
+      const stored = localStorage.getItem(FAVORITES_KEY);
+      if (stored) {
+        return new Set(JSON.parse(stored));
+      }
+    } catch (e) {
+      // localStorage unavailable or corrupt
+    }
+    return new Set();
+  }
+
+  function saveFavorites(favorites) {
+    try {
+      localStorage.setItem(FAVORITES_KEY, JSON.stringify([...favorites]));
+    } catch (e) {
+      // Ignore
+    }
+  }
+
+  function toggleFavorite(id) {
+    const favorites = getFavorites();
+    const numId = Number(id);
+    if (favorites.has(numId)) {
+      favorites.delete(numId);
+    } else {
+      favorites.add(numId);
+    }
+    saveFavorites(favorites);
+    updateFavoriteUI(numId, favorites.has(numId));
+    return favorites.has(numId);
+  }
+
+  function isFavorite(id) {
+    return getFavorites().has(Number(id));
+  }
+
+  function updateFavoriteUI(id, isFav) {
+    document.querySelectorAll(`[data-favorite-btn][data-pokemon-id="${id}"]`).forEach(btn => {
+      btn.setAttribute('aria-pressed', isFav);
+      btn.setAttribute('aria-label', isFav ? 'Remove from favorites' : 'Add to favorites');
+      const icon = btn.querySelector('.favorite-icon');
+      if (icon) {
+        icon.textContent = isFav ? '♥' : '♡';
+      }
+      btn.classList.toggle('favorited', isFav);
+    });
+  }
+
+  function initFavoriteButtons() {
+    const favorites = getFavorites();
+    document.querySelectorAll('[data-favorite-btn]').forEach(btn => {
+      const id = Number(btn.dataset.pokemonId);
+      const isFav = favorites.has(id);
+      btn.setAttribute('aria-pressed', isFav);
+      btn.setAttribute('aria-label', isFav ? 'Remove from favorites' : 'Add to favorites');
+      const icon = btn.querySelector('.favorite-icon');
+      if (icon) {
+        icon.textContent = isFav ? '♥' : '♡';
+      }
+      btn.classList.toggle('favorited', isFav);
+
+      // Attach click handler if not already attached
+      if (!btn.dataset.favHandlerAttached) {
+        btn.addEventListener('click', (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          toggleFavorite(id);
+        });
+        btn.dataset.favHandlerAttached = 'true';
+      }
+    });
+  }
+
+  function createFavoriteButton(pokemonId) {
+    const isFav = isFavorite(pokemonId);
+    const btn = document.createElement('button');
+    btn.className = 'favorite-btn' + (isFav ? ' favorited' : '');
+    btn.dataset.favoriteBtn = 'true';
+    btn.dataset.pokemonId = pokemonId;
+    btn.setAttribute('aria-pressed', isFav);
+    btn.setAttribute('aria-label', isFav ? 'Remove from favorites' : 'Add to favorites');
+    btn.innerHTML = `<span class="favorite-icon" aria-hidden="true">${isFav ? '♥' : '♡'}</span>`;
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      toggleFavorite(pokemonId);
+    });
+    return btn;
+  }
+
+  // ==========================================================================
   // Mobile Hamburger Menu
   // ==========================================================================
 
@@ -116,10 +278,16 @@
         <li><a href="pokemon.html" class="nav-link" data-page="pokemon">Detail</a></li>
         <li><a href="types.html" class="nav-link" data-page="types">Types</a></li>
       </ul>
-      <button class="skin-toggle" data-skin-toggle aria-label="Toggle GBA/NDS skin" aria-pressed="false">
-        <span class="skin-toggle-label">GBA</span>
-        <span class="skin-toggle-btn" aria-hidden="true"></span>
-      </button>
+      <div class="nav-controls" style="display: flex; align-items: center; gap: var(--space-1);">
+        <button class="theme-toggle" data-theme-toggle aria-label="Toggle day/night mode" aria-pressed="false">
+          <span class="theme-toggle-label">☀</span>
+          <span class="theme-toggle-btn" aria-hidden="true"></span>
+        </button>
+        <button class="skin-toggle" data-skin-toggle aria-label="Toggle GBA/NDS skin" aria-pressed="false">
+          <span class="skin-toggle-label">GBA</span>
+          <span class="skin-toggle-btn" aria-hidden="true"></span>
+        </button>
+      </div>
     </nav>
   `;
 
@@ -127,8 +295,9 @@
     const placeholder = document.querySelector('[data-navbar-placeholder]');
     if (placeholder) {
       placeholder.outerHTML = NAV_HTML;
-      // Re-initialize skin toggle for new buttons
+      // Re-initialize toggles for new buttons
       initSkin();
+      initTheme();
       initHamburger();
       highlightCurrentPage();
     }
@@ -338,12 +507,13 @@
   // ==========================================================================
 
   function init() {
-    // Inject shared components (navbar contains skin toggle)
+    // Inject shared components (navbar contains toggles)
     injectNavbar();
     injectFooter();
 
     // Initialize skin after navbar is injected
     initSkin();
+    initTheme();
 
     // Initialize hamburger after navbar is injected
     // (initHamburger is called inside injectNavbar)
@@ -364,6 +534,15 @@
     getSkin,
     setSkin,
     toggleSkin,
+    getTheme,
+    setTheme,
+    toggleTheme,
+    getFavorites,
+    toggleFavorite,
+    isFavorite,
+    updateFavoriteUI,
+    initFavoriteButtons,
+    createFavoriteButton,
     debounce,
     getSpriteUrl,
     createTypeBadge,
