@@ -57,7 +57,7 @@
           <div class="featured-inner">
             <h2 id="featured-heading" class="section-title">FEATURED POKÉMON</h2>
             <div class="featured-grid" id="featured-grid" role="list">
-              <!-- Populated by JS - single Pokémon (Pikachu) -->
+              <!-- Populated by JS - random featured Pokémon -->
             </div>
           </div>
         </section>
@@ -139,12 +139,13 @@
     // Home Page Logic - Uses shared utils
     // ==========================================================================
 
-    // Featured Pokémon - Pikachu
+    // Featured Pokémon - random Pokémon on each page load
     function renderFeatured() {
       const featuredGrid = document.getElementById('featured-grid');
       if (!featuredGrid || !window.POKEMON) return;
 
-      const pokemon = window.POKEMON.find(p => p.id === 25); // Pikachu
+      const randomPokemonId = Math.floor(Math.random() * window.POKEMON.length) + 1;
+      const pokemon = window.POKEMON.find(p => p.id === randomPokemonId);
       if (!pokemon) return;
 
       const card = document.createElement('article');
@@ -182,8 +183,22 @@
     // Starter Picks - Bulbasaur, Charmander, Squirtle
     function renderStarters() {
       const starterGrid = document.getElementById('starter-grid');
-      const starterIds = [1, 4, 7];
       if (!starterGrid || !window.POKEMON) return;
+
+      const starterIdsByGeneration = [
+        [1, 4, 7],
+        [152, 155, 158],
+        [252, 255, 258],
+        [387, 390, 393],
+        [495, 498, 501],
+        [650, 653, 656],
+        [722, 725, 728],
+        [810, 813, 816],
+        [906, 909, 912]
+      ];
+
+      const randomGeneration = Math.floor(Math.random() * starterIdsByGeneration.length);
+      const starterIds = starterIdsByGeneration[randomGeneration];
 
       starterIds.forEach(id => {
         const pokemon = window.POKEMON.find(p => p.id === id);
