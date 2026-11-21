@@ -4,6 +4,8 @@
  * Uses window.PixelDexUtils for shared functionality
  */
 
+const U = window.PixelDexUtils;
+
 // ==========================================================================
 // State
 // ==========================================================================
@@ -23,7 +25,7 @@ function handleFavoriteClick(e) {
   e.preventDefault();
   e.stopPropagation();
 
-  window.PixelDexUtils.toggleFavorite(currentPokemon.id);
+  U.toggleFavorite(currentPokemon.id);
 }
 
 // ==========================================================================
@@ -37,28 +39,28 @@ function renderDetail() {
 
   // Stat bars
   const statsHtml = `
-    ${window.PixelDexUtils.createStatBar('HP', p.stats.hp)}
-    ${window.PixelDexUtils.createStatBar('Attack', p.stats.attack)}
-    ${window.PixelDexUtils.createStatBar('Defense', p.stats.defense)}
-    ${window.PixelDexUtils.createStatBar('Sp. Atk', p.stats.spatk)}
-    ${window.PixelDexUtils.createStatBar('Sp. Def', p.stats.spdef)}
-    ${window.PixelDexUtils.createStatBar('Speed', p.stats.speed)}
+    ${U.createStatBar('HP', p.stats.hp)}
+    ${U.createStatBar('Attack', p.stats.attack)}
+    ${U.createStatBar('Defense', p.stats.defense)}
+    ${U.createStatBar('Sp. Atk', p.stats.spatk)}
+    ${U.createStatBar('Sp. Def', p.stats.spdef)}
+    ${U.createStatBar('Speed', p.stats.speed)}
   `;
 
   // Abilities
   const abilitiesHtml = p.abilities.map(a => `
     <span class="type-badge ${a.hidden ? 'fairy' : 'normal'}" style="background: ${a.hidden ? 'var(--type-fairy)' : 'var(--type-normal)'};">
-      ${window.PixelDexUtils.capitalize(a.name.replace('-', ' '))}${a.hidden ? ' (Hidden)' : ''}
+      ${U.capitalize(a.name.replace('-', ' '))}${a.hidden ? ' (Hidden)' : ''}
     </span>
   `).join('');
 
   // Types
   const typesHtml = p.types.map(t => `
-    <span class="type-badge ${t}">${window.PixelDexUtils.capitalize(t)}</span>
+    <span class="type-badge ${t}">${U.capitalize(t)}</span>
   `).join('');
 
   // Favorite button (create without click handler - we use event delegation)
-  const favBtn = window.PixelDexUtils.createFavoriteButton(p.id);
+  const favBtn = U.createFavoriteButton(p.id);
   // Remove the click handler since we use event delegation
   const newFavBtn = favBtn.cloneNode(true);
   // We need to remove the old event listener - but since we use outerHTML, it's already lost
@@ -72,12 +74,12 @@ function renderDetail() {
     <article class="pokemon-detail">
       <header class="detail-header">
         <div class="detail-sprite-wrapper">
-          ${window.PixelDexUtils.createSpriteHtml(p.id, p.name)}
+          ${U.createSpriteHtml(p.id, p.name)}
         </div>
         <div class="detail-info">
           <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-2); width: 100%;">
             <div>
-              <h1 class="detail-name">${window.PixelDexUtils.capitalize(p.name)}</h1>
+              <h1 class="detail-name">${U.capitalize(p.name)}</h1>
               <p class="detail-id">#${String(p.id).padStart(3, '0')} • ${p.genName} (Gen ${p.gen})</p>
               <div class="detail-types">${typesHtml}</div>
             </div>
@@ -102,8 +104,8 @@ function renderDetail() {
       <section class="detail-section" aria-labelledby="physical-heading">
         <h2 id="physical-heading" class="detail-section-title">Physical Data</h2>
         <div class="flex gap-3 flex-wrap" style="font-size: 14px;">
-          <div><strong>Height:</strong> ${window.PixelDexUtils.formatHeight(p.height)}</div>
-          <div><strong>Weight:</strong> ${window.PixelDexUtils.formatWeight(p.weight)}</div>
+          <div><strong>Height:</strong> ${U.formatHeight(p.height)}</div>
+          <div><strong>Weight:</strong> ${U.formatWeight(p.weight)}</div>
         </div>
       </section>
 
@@ -122,7 +124,7 @@ function renderDetail() {
   `;
 
   // Update page title
-  document.title = `PixelDex - ${window.PixelDexUtils.capitalize(p.name)} (#${String(p.id).padStart(3, '0')})`;
+  document.title = `PixelDex - ${U.capitalize(p.name)} (#${String(p.id).padStart(3, '0')})`;
 }
 
 // ==========================================================================
@@ -135,7 +137,7 @@ function init() {
     return;
   }
 
-  const id = parseInt(window.PixelDexUtils.getUrlParam('id'), 10);
+  const id = parseInt(U.getUrlParam('id'), 10);
 
   if (!id || id < 1 || id > window.POKEMON.length) {
     showError('Invalid Pokémon ID. Please return to the <a href="pokedex.html">Pokédex</a>.');
@@ -169,8 +171,8 @@ function showError(message) {
 
 // Run init when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
-  window.PixelDexUtils.initTheme();
-  window.PixelDexUtils.initHamburger();
-  window.PixelDexUtils.highlightCurrentPage();
+  U.initTheme();
+  U.initHamburger();
+  U.highlightCurrentPage();
   init();
 });

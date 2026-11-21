@@ -4,6 +4,8 @@
  * Uses window.PixelDexUtils for shared functionality
  */
 
+const U = window.PixelDexUtils;
+
 // ==========================================================================
 // Constants & Data
 // ==========================================================================
@@ -78,7 +80,7 @@ function buildTypeCheckboxes() {
     span.className = `type-badge ${type}`;
     span.style.fontSize = '10px';
     span.style.padding = '2px 8px';
-    span.textContent = window.PixelDexUtils.capitalize(type);
+    span.textContent = U.capitalize(type);
 
     label.appendChild(checkbox);
     label.appendChild(span);
@@ -151,12 +153,12 @@ function handleFavoriteClick(e) {
   e.stopPropagation();
 
   const pokemonId = parseInt(favBtn.dataset.pokemonId, 10);
-  window.PixelDexUtils.toggleFavorite(pokemonId);
+  U.toggleFavorite(pokemonId);
 }
 
 function attachEventListeners() {
   // Debounced search for performance with 1025 items
-  const debouncedSearch = window.PixelDexUtils.debounce(handleSearch, 150);
+  const debouncedSearch = U.debounce(handleSearch, 150);
   elements.searchInput.addEventListener('input', debouncedSearch);
 
   elements.genFilter.addEventListener('change', handleGenChange);
@@ -172,7 +174,7 @@ function attachEventListeners() {
 // ==========================================================================
 
 function applyFilters() {
-  const favorites = window.PixelDexUtils.getFavorites();
+  const favorites = U.getFavorites();
 
   filteredPokemon = window.POKEMON.filter(pokemon => {
     // Search filter
@@ -234,8 +236,8 @@ function renderGrid() {
 
   // Use innerHTML for simplicity (beginner-friendly)
   grid.innerHTML = filteredPokemon.map(pokemon => {
-    const spriteHtml = window.PixelDexUtils.createSpriteHtml(pokemon.id, pokemon.name);
-    const favBtn = window.PixelDexUtils.createFavoriteButton(pokemon.id);
+    const spriteHtml = U.createSpriteHtml(pokemon.id, pokemon.name);
+    const favBtn = U.createFavoriteButton(pokemon.id);
     const favBtnHtml = favBtn.outerHTML;
 
     return `
@@ -244,10 +246,10 @@ function renderGrid() {
           <div style="position: relative; width: 100%; aspect-ratio: 1;">
             ${spriteHtml}
           </div>
-          <h3 class="card-title">${window.PixelDexUtils.capitalize(pokemon.name)}</h3>
+          <h3 class="card-title">${U.capitalize(pokemon.name)}</h3>
           <p class="card-id">#${String(pokemon.id).padStart(3, '0')}</p>
           <div class="card-types">
-            ${pokemon.types.map(t => `<span class="type-badge ${t}">${window.PixelDexUtils.capitalize(t)}</span>`).join('')}
+            ${pokemon.types.map(t => `<span class="type-badge ${t}">${U.capitalize(t)}</span>`).join('')}
           </div>
           ${favBtnHtml}
         </div>
@@ -290,7 +292,7 @@ function updateResultsCount() {
   }
 
   if (state.favoritesOnly) {
-    const favCount = window.PixelDexUtils.getFavorites().size;
+    const favCount = U.getFavorites().size;
     baseText += ` (${favCount} favorited)`;
   }
 
@@ -315,8 +317,8 @@ function init() {
 
 // Run init when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
-  window.PixelDexUtils.initTheme();
-  window.PixelDexUtils.initHamburger();
-  window.PixelDexUtils.highlightCurrentPage();
+  U.initTheme();
+  U.initHamburger();
+  U.highlightCurrentPage();
   init();
 });

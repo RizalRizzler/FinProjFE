@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="PixelDex - A fan-made Pokémon wiki and Pokédex">
   <title>PixelDex - Home</title>
+  <script>
+    document.documentElement.dataset.theme = localStorage.getItem('theme') || 'light';
+  </script>
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body data-page="home">
@@ -135,6 +138,8 @@
   <script src="js/data.js"></script>
   <script src="js/utils.js"></script>
   <script>
+    const U = window.PixelDexUtils;
+
     // ==========================================================================
     // Home Page Logic - Uses shared utils
     // ==========================================================================
@@ -163,17 +168,17 @@
         }
       });
 
-      const spriteHtml = window.PixelDexUtils.createSpriteHtml(pokemon.id, pokemon.name);
+      const spriteHtml = U.createSpriteHtml(pokemon.id, pokemon.name);
 
       card.innerHTML = `
         <div class="card-inner">
           <div style="position: relative; width: 100%; aspect-ratio: 1;">
             ${spriteHtml}
           </div>
-          <h3 class="card-title">${window.PixelDexUtils.capitalize(pokemon.name)}</h3>
+          <h3 class="card-title">${U.capitalize(pokemon.name)}</h3>
           <p class="card-id">#${String(pokemon.id).padStart(3, '0')}</p>
           <div class="card-types">
-            ${pokemon.types.map(t => `<span class="type-badge ${t}">${window.PixelDexUtils.capitalize(t)}</span>`).join('')}
+            ${pokemon.types.map(t => `<span class="type-badge ${t}">${U.capitalize(t)}</span>`).join('')}
           </div>
         </div>
       `;
@@ -209,17 +214,17 @@
         card.href = `pokemon.html?id=${pokemon.id}`;
         card.setAttribute('role', 'listitem');
 
-        const spriteHtml = window.PixelDexUtils.createSpriteHtml(pokemon.id, pokemon.name);
+        const spriteHtml = U.createSpriteHtml(pokemon.id, pokemon.name);
 
         card.innerHTML = `
           <div class="card-inner">
             <div style="position: relative; width: 100%; aspect-ratio: 1;">
               ${spriteHtml}
             </div>
-            <h3 class="card-title">${window.PixelDexUtils.capitalize(pokemon.name)}</h3>
+            <h3 class="card-title">${U.capitalize(pokemon.name)}</h3>
             <p class="card-id">#${String(pokemon.id).padStart(3, '0')}</p>
             <div class="card-types">
-              ${pokemon.types.map(t => `<span class="type-badge ${t}">${window.PixelDexUtils.capitalize(t)}</span>`).join('')}
+              ${pokemon.types.map(t => `<span class="type-badge ${t}">${U.capitalize(t)}</span>`).join('')}
             </div>
           </div>
         `;
@@ -236,7 +241,7 @@
       allTypes.forEach(type => {
         const span = document.createElement('span');
         span.className = `type-badge ${type}`;
-        span.textContent = window.PixelDexUtils.capitalize(type);
+        span.textContent = U.capitalize(type);
         span.setAttribute('role', 'listitem');
         typeBadges.appendChild(span);
       });
@@ -244,9 +249,9 @@
 
     // Initialize everything when DOM is ready
     document.addEventListener('DOMContentLoaded', () => {
-      window.PixelDexUtils.initTheme();
-      window.PixelDexUtils.initHamburger();
-      window.PixelDexUtils.highlightCurrentPage();
+      U.initTheme();
+      U.initHamburger();
+      U.highlightCurrentPage();
       renderFeatured();
       renderStarters();
       renderTypeBadges();

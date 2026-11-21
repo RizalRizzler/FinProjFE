@@ -120,11 +120,25 @@ function createSpriteHtml(pokemonId, pokemonName) {
   const urls = getSpriteUrl(pokemonId);
   let html = '';
   urls.forEach((url, i) => {
-    const isLast = i === urls.length - 1;
-    html += `<img src="${url}" alt="${pokemonName}" class="card-image" loading="lazy" ${i > 0 ? 'style="display:none"' : ''} onerror="this.style.display='none'; ${isLast ? '' : `this.parentElement.querySelectorAll('img')[${i+1}].style.display='block'`}">`;
+    html += `<img src="${url}" alt="${pokemonName}" class="card-image" loading="lazy" ${i > 0 ? 'style="display:none"' : ''} data-sprite-fallback-index="${i}">`;
   });
   return html;
 }
+
+document.addEventListener('error', (event) => {
+  const failedImage = event.target;
+  if (!(failedImage instanceof HTMLImageElement) || !failedImage.hasAttribute('data-sprite-fallback-index')) return;
+
+  const fallbackIndex = Number(failedImage.dataset.spriteFallbackIndex) + 1;
+  const fallbackImage = failedImage.parentElement?.querySelector(
+    `[data-sprite-fallback-index="${fallbackIndex}"]`
+  );
+
+  failedImage.style.display = 'none';
+  if (fallbackImage) {
+    fallbackImage.style.display = 'block';
+  }
+}, true);
 
 // ==========================================================================
 // Favorites Management
@@ -155,14 +169,17 @@ function saveFavorites(favorites) {
 function toggleFavorite(id) {
   const favorites = getFavorites();
   const numId = Number(id);
-  if (favorites.has(numId)) {
-    favorites.delete(numId);
-  } else {
+  const isFav = !favorites.has(numId);
+
+  if (isFav) {
     favorites.add(numId);
+  } else {
+    favorites.delete(numId);
   }
+
   saveFavorites(favorites);
-  updateFavoriteUI(numId, favorites.has(numId));
-  return favorites.has(numId);
+  updateFavoriteUI(numId, isFav);
+  return isFav;
 }
 
 function isFavorite(id) {

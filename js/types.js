@@ -5,6 +5,8 @@
  * Uses window.PixelDexUtils for shared functionality
  */
 
+const U = window.PixelDexUtils;
+
 // ==========================================================================
 // Type Effectiveness Data (Modern 18-type chart with Fairy)
 // Values: 2 = super effective, 1 = normal, 0.5 = not very effective, 0 = no effect
@@ -76,7 +78,7 @@ function buildChart() {
     const th = document.createElement('th');
     th.scope = 'col';
     th.className = 'type-chart-header';
-    th.innerHTML = `<span class="type-badge ${type}" style="font-size: 9px; padding: 2px 6px;">${window.PixelDexUtils.capitalize(type)}</span>`;
+    th.innerHTML = `<span class="type-badge ${type}" style="font-size: 9px; padding: 2px 6px;">${U.capitalize(type)}</span>`;
     thead.appendChild(th);
   });
 
@@ -87,7 +89,7 @@ function buildChart() {
     // Row header (attacking type)
     const th = document.createElement('th');
     th.scope = 'row';
-    th.innerHTML = `<span class="type-badge ${atkType}">${window.PixelDexUtils.capitalize(atkType)}</span>`;
+    th.innerHTML = `<span class="type-badge ${atkType}">${U.capitalize(atkType)}</span>`;
     tr.appendChild(th);
 
     // Cells for each defending type
@@ -114,8 +116,8 @@ function init() {
 
 // Run init when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
-  window.PixelDexUtils.initTheme();
-  window.PixelDexUtils.initHamburger();
-  window.PixelDexUtils.highlightCurrentPage();
+  U.initTheme();
+  U.initHamburger();
+  U.highlightCurrentPage();
   init();
 });
