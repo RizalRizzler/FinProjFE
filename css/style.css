@@ -1,10 +1,10 @@
-/* PixelDex - Shared Stylesheet */
-/* GBA/NDS Pixel Art Design System */
+/* PixelDex - Simplified Stylesheet */
+/* Light/Dark Theme System - Beginner Friendly */
 
 @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Pixelify+Sans:wght@400;600;700&display=swap');
 
 /* ==========================================================================
-   CSS Custom Properties - Design Tokens
+   CSS Custom Properties - Design Tokens (Simplified ~45 properties)
    ========================================================================== */
 
 :root {
@@ -27,9 +27,9 @@
   --radius-md: 8px;
 
   /* Shadows */
-  --shadow-pixel: 4px 4px 0 0 var(--color-border);
-  --shadow-pixel-hover: 6px 6px 0 0 var(--color-border);
-  --shadow-inset: inset 2px 2px 0 0 var(--color-highlight), inset -2px -2px 0 0 var(--color-shadow);
+  --shadow-sm: 2px 2px 0 0 var(--color-border);
+  --shadow-md: 4px 4px 0 0 var(--color-border);
+  --shadow-lg: 6px 6px 0 0 var(--color-border);
 
   /* Transitions */
   --transition-fast: 100ms ease;
@@ -39,19 +39,13 @@
   --z-dropdown: 100;
   --z-modal: 200;
   --z-toast: 300;
-}
 
-/* ==========================================================================
-   GBA SKIN (Default) - Bright, saturated, chunky
-   ========================================================================== */
-
-html[data-skin="gba"] {
-  /* Colors - Emerald/Ruby palette */
-  --color-bg: #a8d0a8;
-  --color-bg-dark: #88b888;
-  --color-bg-light: #c8e8c8;
-  --color-panel: #e8f0e8;
-  --color-panel-dark: #d8e0d8;
+  /* Light theme (default) */
+  --color-bg: #e8f0e8;
+  --color-bg-dark: #d8e0d8;
+  --color-bg-light: #f0f8f0;
+  --color-panel: #ffffff;
+  --color-panel-dark: #f0f0f0;
   --color-border: #386838;
   --color-border-dark: #285028;
   --color-highlight: #f8f8f8;
@@ -67,7 +61,7 @@ html[data-skin="gba"] {
   --color-link: #2850a8;
   --color-link-hover: #183888;
 
-  /* Type colors (GBA style - brighter) */
+  /* Type colors */
   --type-normal: #a8a878;
   --type-fire: #f08030;
   --type-water: #6890f0;
@@ -102,74 +96,8 @@ html[data-skin="gba"] {
   --cursor-color: #386838;
 }
 
-/* ==========================================================================
-   NDS SKIN - Softer, menu-driven, silver/pastel
-   ========================================================================== */
-
-html[data-skin="nds"] {
-  /* Colors - Silver/Pastel palette */
-  --color-bg: #c8c8d8;
-  --color-bg-dark: #a8a8c0;
-  --color-bg-light: #e0e0e8;
-  --color-panel: #f0f0f8;
-  --color-panel-dark: #e0e0e8;
-  --color-border: #686888;
-  --color-border-dark: #484868;
-  --color-highlight: #f8f8f8;
-  --color-shadow: #8888a8;
-  --color-text: #282848;
-  --color-text-muted: #585878;
-  --color-text-inverse: #f8f8f8;
-  --color-primary: #686888;
-  --color-primary-hover: #484868;
-  --color-primary-light: #e8e8f0;
-  --color-accent: #a868a8;
-  --color-accent-hover: #884888;
-  --color-link: #4848c8;
-  --color-link-hover: #3030a8;
-
-  /* Type colors (NDS style - softer) */
-  --type-normal: #b8b8a0;
-  --type-fire: #f89848;
-  --type-water: #88a8f8;
-  --type-electric: #f8e048;
-  --type-grass: #98d070;
-  --type-ice: #b0e0e0;
-  --type-fighting: #d04840;
-  --type-poison: #b858b8;
-  --type-ground: #e8d088;
-  --type-flying: #c0b8f8;
-  --type-psychic: #f878a8;
-  --type-bug: #b8c830;
-  --type-rock: #c8b858;
-  --type-ghost: #8870b8;
-  --type-dragon: #8858f8;
-  --type-dark: #887060;
-  --type-steel: #c8c8e0;
-  --type-fairy: #f8b8f8;
-
-  /* Stat bar colors */
-  --stat-hp: #f05858;
-  --stat-attack: #f89848;
-  --stat-defense: #f8e048;
-  --stat-spatk: #f05858;
-  --stat-spdef: #98d070;
-  --stat-speed: #f8e048;
-
-  /* Dialogue box */
-  --dialogue-bg: #f0f0f8;
-  --dialogue-border: #686888;
-  --dialogue-text: #282848;
-  --cursor-color: #686888;
-}
-
-/* ==========================================================================
-   DAY/NIGHT THEME OVERRIDES
-   ========================================================================== */
-/* Night mode applies on top of current skin (GBA or NDS) */
-
-html[data-theme="night"] {
-  /* GBA Night - Dark emerald/forest */
+/* Dark theme override */
+html[data-theme="dark"] {
   --color-bg: #182818;
   --color-bg-dark: #102010;
   --color-bg-light: #203820;
@@ -190,7 +118,7 @@ html[data-theme="night"] {
   --color-link: #88a8e8;
   --color-link-hover: #a8c8f8;
 
-  /* Type colors (GBA Night - muted) */
+  /* Type colors (Dark - muted) */
   --type-normal: #888868;
   --type-fire: #d07030;
   --type-water: #5880e0;
@@ -210,7 +138,7 @@ html[data-theme="night"] {
   --type-steel: #a8a8c0;
   --type-fairy: #d898d8;
 
-  /* Stat bar colors (Night) */
+  /* Stat bar colors (Dark) */
   --stat-hp: #d04040;
   --stat-attack: #d07030;
   --stat-defense: #d8b030;
@@ -218,73 +146,15 @@ html[data-theme="night"] {
   --stat-spdef: #68a850;
   --stat-speed: #d8b030;
 
-  /* Dialogue box (Night) */
+  /* Dialogue box (Dark) */
   --dialogue-bg: #203020;
   --dialogue-border: #487848;
   --dialogue-text: #e8f0e8;
   --cursor-color: #68a868;
 }
 
-/* NDS Night overrides (more specific) */
-html[data-skin="nds"][data-theme="night"] {
-  /* NDS Night - Dark silver/space */
-  --color-bg: #181828;
-  --color-bg-dark: #101020;
-  --color-bg-light: #202038;
-  --color-panel: #202030;
-  --color-panel-dark: #181828;
-  --color-border: #585878;
-  --color-border-dark: #484868;
-  --color-highlight: #282838;
-  --color-shadow: #080818;
-  --color-text: #e0e0f0;
-  --color-text-muted: #8888a8;
-  --color-text-inverse: #181828;
-  --color-primary: #8888a8;
-  --color-primary-hover: #a8a8c8;
-  --color-primary-light: #282838;
-  --color-accent: #c888c8;
-  --color-accent-hover: #e8a8e8;
-  --color-link: #7878d8;
-  --color-link-hover: #9898f8;
-
-  /* Type colors (NDS Night - muted pastel) */
-  --type-normal: #a8a890;
-  --type-fire: #d88848;
-  --type-water: #7898e8;
-  --type-electric: #d8c048;
-  --type-grass: #88c070;
-  --type-ice: #a0d0d0;
-  --type-fighting: #c04840;
-  --type-poison: #a858a8;
-  --type-ground: #d8c088;
-  --type-flying: #b0a8e8;
-  --type-psychic: #e878a8;
-  --type-bug: #a8b830;
-  --type-rock: #b8a858;
-  --type-ghost: #7870a8;
-  --type-dragon: #7858e8;
-  --type-dark: #786860;
-  --type-steel: #b8b8d0;
-  --type-fairy: #e8a8e8;
-
-  /* Stat bar colors (NDS Night) */
-  --stat-hp: #e05858;
-  --stat-attack: #e89848;
-  --stat-defense: #e8d048;
-  --stat-spatk: #e05858;
-  --stat-spdef: #88c070;
-  --stat-speed: #e8d048;
-
-  /* Dialogue box (NDS Night) */
-  --dialogue-bg: #202030;
-  --dialogue-border: #585878;
-  --dialogue-text: #e0e0f0;
-  --cursor-color: #8888a8;
-}
-
-/* Background pattern adjustment for night mode */
-html[data-theme="night"] body {
+/* Background pattern adjustment for dark mode */
+html[data-theme="dark"] body {
   background-image:
     radial-gradient(circle at 0 0, var(--color-bg-light) 1px, transparent 1px),
     radial-gradient(circle at 0 0, var(--color-bg-light) 1px, transparent 1px);
@@ -465,7 +335,7 @@ p, li, span, div, td, th {
   color: var(--color-text);
   background: var(--color-panel-dark);
   border: 2px solid var(--color-border);
-  box-shadow: var(--shadow-pixel);
+  box-shadow: var(--shadow-sm);
   transition: all var(--transition-fast);
   position: relative;
 }
@@ -481,7 +351,7 @@ p, li, span, div, td, th {
 .nav-link:hover,
 .nav-link[aria-current="page"] {
   color: var(--color-primary);
-  box-shadow: var(--shadow-pixel-hover);
+  box-shadow: var(--shadow-md);
   transform: translate(-2px, -2px);
 }
 
@@ -500,62 +370,6 @@ p, li, span, div, td, th {
   51%, 100% { opacity: 0; }
 }
 
-/* Skin Toggle */
-.skin-toggle {
-  display: flex;
-  align-items: center;
-  gap: var(--space-1);
-  padding: var(--space-1) var(--space-2);
-  background: var(--color-panel-dark);
-  border: 2px solid var(--color-border);
-  box-shadow: var(--shadow-pixel);
-  cursor: pointer;
-  transition: all var(--transition-fast);
-}
-
-.skin-toggle:hover {
-  box-shadow: var(--shadow-pixel-hover);
-  transform: translate(-2px, -2px);
-}
-
-.skin-toggle:active {
-  box-shadow: none;
-  transform: translate(0, 0);
-}
-
-.skin-toggle-label {
-  font-size: 10px;
-  color: var(--color-text-muted);
-}
-
-.skin-toggle-btn {
-  width: 32px;
-  height: 20px;
-  background: var(--color-bg);
-  border: 2px solid var(--color-border);
-  border-radius: 10px;
-  position: relative;
-  cursor: pointer;
-}
-
-.skin-toggle-btn::after {
-  content: "";
-  position: absolute;
-  top: 2px;
-  left: 2px;
-  width: 12px;
-  height: 12px;
-  background: var(--color-accent);
-  border-radius: 50%;
-  transition: transform var(--transition-fast);
-  box-shadow: 1px 1px 0 0 var(--color-border-dark);
-}
-
-html[data-skin="nds"] .skin-toggle-btn::after {
-  transform: translateX(12px);
-  background: var(--color-primary);
-}
-
 /* Theme Toggle (Day/Night) */
 .theme-toggle {
   display: flex;
@@ -564,13 +378,13 @@ html[data-skin="nds"] .skin-toggle-btn::after {
   padding: var(--space-1) var(--space-2);
   background: var(--color-panel-dark);
   border: 2px solid var(--color-border);
-  box-shadow: var(--shadow-pixel);
+  box-shadow: var(--shadow-sm);
   cursor: pointer;
   transition: all var(--transition-fast);
 }
 
 .theme-toggle:hover {
-  box-shadow: var(--shadow-pixel-hover);
+  box-shadow: var(--shadow-md);
   transform: translate(-2px, -2px);
 }
 
@@ -607,7 +421,7 @@ html[data-skin="nds"] .skin-toggle-btn::after {
   box-shadow: 1px 1px 0 0 var(--color-border-dark);
 }
 
-html[data-theme="night"] .theme-toggle-btn::after {
+html[data-theme="dark"] .theme-toggle-btn::after {
   transform: translateX(10px);
   background: var(--color-primary);
 }
@@ -699,7 +513,6 @@ html[data-theme="night"] .theme-toggle-btn::after {
     border-top: 2px solid var(--color-border);
   }
 
-  .skin-toggle,
   .theme-toggle {
     justify-content: center;
   }
@@ -721,7 +534,7 @@ html[data-theme="night"] .theme-toggle-btn::after {
   color: var(--color-text-inverse);
   background: var(--color-primary);
   border: 2px solid var(--color-border);
-  box-shadow: var(--shadow-pixel);
+  box-shadow: var(--shadow-sm);
   cursor: pointer;
   transition: all var(--transition-fast);
   white-space: nowrap;
@@ -729,7 +542,7 @@ html[data-theme="night"] .theme-toggle-btn::after {
 
 .btn:hover {
   background: var(--color-primary-hover);
-  box-shadow: var(--shadow-pixel-hover);
+  box-shadow: var(--shadow-md);
   transform: translate(-2px, -2px);
   color: var(--color-text-inverse);
 }
@@ -743,7 +556,7 @@ html[data-theme="night"] .theme-toggle-btn::after {
   opacity: 0.5;
   cursor: not-allowed;
   transform: none;
-  box-shadow: var(--shadow-pixel);
+  box-shadow: var(--shadow-sm);
 }
 
 .btn-secondary {
@@ -752,7 +565,8 @@ html[data-theme="night"] .theme-toggle-btn::after {
 }
 
 .btn-secondary:hover {
-  background: var(--color-bg);
+  background: var(--color-primary-light);
+  color: var(--color-primary);
 }
 
 .btn-accent {
@@ -783,7 +597,7 @@ html[data-theme="night"] .theme-toggle-btn::after {
   height: 32px;
   background: var(--color-panel-dark);
   border: 2px solid var(--color-border);
-  box-shadow: var(--shadow-pixel);
+  box-shadow: var(--shadow-sm);
   cursor: pointer;
   transition: all var(--transition-fast);
   border-radius: 4px;
@@ -791,7 +605,7 @@ html[data-theme="night"] .theme-toggle-btn::after {
 }
 
 .favorite-btn:hover {
-  box-shadow: var(--shadow-pixel-hover);
+  box-shadow: var(--shadow-md);
   transform: translate(-2px, -2px);
   background: var(--color-bg);
 }
@@ -845,14 +659,14 @@ html[data-theme="night"] .theme-toggle-btn::after {
   color: var(--color-text);
   background: var(--color-panel);
   border: 2px solid var(--color-border);
-  box-shadow: var(--shadow-inset);
+  box-shadow: inset 2px 2px 0 0 var(--color-highlight), inset -2px -2px 0 0 var(--color-shadow);
   transition: all var(--transition-fast);
 }
 
 .input-field:focus,
 .select-field:focus,
 .textarea-field:focus {
-  box-shadow: var(--shadow-inset), 0 0 0 2px var(--color-accent);
+  box-shadow: inset 2px 2px 0 0 var(--color-highlight), inset -2px -2px 0 0 var(--color-shadow), 0 0 0 2px var(--color-accent);
 }
 
 .select-field {
@@ -864,8 +678,8 @@ html[data-theme="night"] .theme-toggle-btn::after {
   padding-right: var(--space-3);
 }
 
-html[data-skin="nds"] .select-field {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23686888' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+html[data-theme="dark"] .select-field {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2368a868' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
 }
 
 .checkbox-group,
@@ -906,7 +720,7 @@ html[data-skin="nds"] .select-field {
   color: var(--color-text);
   background: var(--color-panel);
   border: 2px solid var(--color-border);
-  box-shadow: var(--shadow-inset);
+  box-shadow: inset 2px 2px 0 0 var(--color-highlight), inset -2px -2px 0 0 var(--color-shadow);
 }
 
 .search-icon {
@@ -933,13 +747,13 @@ html[data-skin="nds"] .select-field {
 .card {
   background: var(--color-panel);
   border: 2px solid var(--color-border);
-  box-shadow: var(--shadow-pixel);
+  box-shadow: var(--shadow-sm);
   transition: all var(--transition-fast);
   overflow: hidden;
 }
 
 .card:hover {
-  box-shadow: var(--shadow-pixel-hover);
+  box-shadow: var(--shadow-md);
   transform: translate(-2px, -2px);
 }
 
@@ -962,6 +776,10 @@ html[data-skin="nds"] .select-field {
   background-repeat: no-repeat;
   background-size: cover;
   image-rendering: pixelated;
+}
+
+html[data-theme="dark"] .card-image {
+  background-image: url("../assets/sprite_background_dark.png");
 }
 
 .card-title {
@@ -1044,80 +862,6 @@ html[data-skin="nds"] .select-field {
 }
 
 /* ==========================================================================
-   Dialogue Box (Typewriter Effect)
-   ========================================================================== */
-
-.dialogue-box {
-  background: var(--dialogue-bg);
-  border: 4px solid var(--dialogue-border);
-  box-shadow: var(--shadow-pixel);
-  padding: var(--space-3);
-  margin: var(--space-3) 0;
-  position: relative;
-  overflow: hidden;
-}
-
-.dialogue-box::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 4px;
-  background: repeating-linear-gradient(
-    90deg,
-    var(--dialogue-border) 0,
-    var(--dialogue-border) 4px,
-    var(--dialogue-bg) 4px,
-    var(--dialogue-bg) 8px
-  );
-}
-
-.dialogue-text {
-  font-family: var(--font-body);
-  font-size: 14px;
-  line-height: 1.6;
-  color: var(--dialogue-text);
-  min-height: 1.6em;
-}
-
-.dialogue-text.typewriter {
-  overflow: hidden;
-  white-space: pre-wrap;
-  border-right: 2px solid var(--cursor-color);
-  animation:
-    typing 3s steps(80, end) forwards,
-    blink-cursor 1s infinite;
-  width: 0;
-}
-
-@keyframes typing {
-  from { width: 0; }
-  to { width: 100%; }
-}
-
-@keyframes blink-cursor {
-  0%, 50% { border-color: var(--cursor-color); }
-  51%, 100% { border-color: transparent; }
-}
-
-.dialogue-arrow {
-  position: absolute;
-  bottom: 8px;
-  right: 12px;
-  color: var(--cursor-color);
-  animation: bounce 1s infinite;
-  font-size: 16px;
-  line-height: 1;
-}
-
-@keyframes bounce {
-  0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
-  40% { transform: translateY(-4px); }
-  60% { transform: translateY(-2px); }
-}
-
-/* ==========================================================================
    Pokemon Detail Page
    ========================================================================== */
 
@@ -1130,7 +874,18 @@ html[data-skin="nds"] .select-field {
   padding: var(--space-3);
   background: var(--color-panel);
   border: 2px solid var(--color-border);
-  box-shadow: var(--shadow-pixel);
+  box-shadow: var(--shadow-sm);
+}
+
+.detail-sprite-wrapper {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  flex-shrink: 0;
+  border: 2px solid var(--color-border);
+  background: var(--color-bg);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
 }
 
 .detail-sprite {
@@ -1143,8 +898,12 @@ html[data-skin="nds"] .select-field {
   background-repeat: no-repeat;
   background-size: cover;
   border: 2px solid var(--color-border);
-  box-shadow: var(--shadow-inset);
+  box-shadow: inset 2px 2px 0 0 var(--color-highlight), inset -2px -2px 0 0 var(--color-shadow);
   flex-shrink: 0;
+}
+
+html[data-theme="dark"] .detail-sprite {
+  background-image: url("../assets/sprite_background_dark.png");
 }
 
 .detail-info {
@@ -1205,7 +964,7 @@ html[data-skin="nds"] .select-field {
   height: 16px;
   background: var(--color-bg);
   border: 2px solid var(--color-border);
-  box-shadow: var(--shadow-inset);
+  box-shadow: inset 2px 2px 0 0 var(--color-highlight), inset -2px -2px 0 0 var(--color-shadow);
   overflow: hidden;
   position: relative;
 }
@@ -1307,12 +1066,6 @@ html[data-skin="nds"] .select-field {
   color: var(--color-text-inverse);
 }
 
-.type-chart td.highlighted {
-  transform: scale(1.1);
-  z-index: 10;
-  box-shadow: 0 0 0 2px var(--color-accent);
-}
-
 .type-chart-header {
   writing-mode: vertical-rl;
   text-orientation: mixed;
@@ -1336,7 +1089,7 @@ html[data-skin="nds"] .select-field {
   padding: var(--space-3);
   background: var(--color-panel);
   border: 2px solid var(--color-border);
-  box-shadow: var(--shadow-pixel);
+  box-shadow: var(--shadow-sm);
   text-align: center;
   transition: all var(--transition-fast);
   text-decoration: none;
@@ -1344,7 +1097,7 @@ html[data-skin="nds"] .select-field {
 }
 
 .link-card:hover {
-  box-shadow: var(--shadow-pixel-hover);
+  box-shadow: var(--shadow-md);
   transform: translate(-2px, -2px);
   color: var(--color-primary);
 }
@@ -1399,10 +1152,7 @@ html[data-skin="nds"] .select-field {
   min-width: 360px;
 }
 
-/* ==========================================================================
-   Home Page - Hero Section
-   ========================================================================== */
-
+/* Home Page - Hero Section */
 .hero-section {
   margin: 0;
 }
@@ -1460,16 +1210,7 @@ html[data-skin="nds"] .select-field {
   margin-top: var(--space-1);
 }
 
-.hero-arrow {
-  animation: bounce 1s infinite;
-  font-size: 18px;
-  color: var(--color-primary);
-}
-
-/* ==========================================================================
-   Home Page - Featured Pokémon Section
-   ========================================================================== */
-
+/* Home Page - Featured Pokémon Section */
 .featured-section {
   margin: 0;
 }
@@ -1520,10 +1261,7 @@ html[data-skin="nds"] .select-field {
   }
 }
 
-/* ==========================================================================
-   Home Page - Main Menu Section
-   ========================================================================== */
-
+/* Home Page - Main Menu Section */
 .menu-section {
   margin: var(--space-4) 0;
 }
@@ -1597,10 +1335,7 @@ html[data-skin="nds"] .select-field {
   white-space: nowrap;
 }
 
-/* ==========================================================================
-   Home Page - Starter Picks Section
-   ========================================================================== */
-
+/* Home Page - Starter Picks Section */
 .starter-section {
   margin: var(--space-4) 0;
 }
@@ -1616,10 +1351,7 @@ html[data-skin="nds"] .select-field {
   min-width: 0;
 }
 
-/* ==========================================================================
-   Home Page - Type Chart Preview Section
-   ========================================================================== */
-
+/* Home Page - Type Chart Preview Section */
 .type-preview-section {
   margin: var(--space-4) 0;
 }
@@ -1767,6 +1499,50 @@ html[data-skin="nds"] .select-field {
   color: var(--color-text-inverse);
   padding: var(--space-2);
   border: 2px solid var(--color-accent-hover);
-  box-shadow: var(--shadow-pixel);
+  box-shadow: var(--shadow-sm);
   margin: var(--space-2) 0;
+}
+
+/* Dialogue Box (static - no typewriter animation) */
+.dialogue-box {
+  background: var(--dialogue-bg);
+  border: 4px solid var(--dialogue-border);
+  box-shadow: var(--shadow-sm);
+  padding: var(--space-3);
+  margin: var(--space-3) 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.dialogue-box::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: repeating-linear-gradient(
+    90deg,
+    var(--dialogue-border) 0,
+    var(--dialogue-border) 4px,
+    var(--dialogue-bg) 4px,
+    var(--dialogue-bg) 8px
+  );
+}
+
+.dialogue-text {
+  font-family: var(--font-body);
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--dialogue-text);
+  min-height: 1.6em;
+}
+
+.dialogue-arrow {
+  position: absolute;
+  bottom: 8px;
+  right: 12px;
+  color: var(--cursor-color);
+  font-size: 16px;
+  line-height: 1;
 }

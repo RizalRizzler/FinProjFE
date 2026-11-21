@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-skin="gba">
+<html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,18 +11,30 @@
   <header class="site-header">
     <div class="header-inner">
       <h1 class="site-title"><a href="index.html">PIXELDEX</a></h1>
-      <div data-navbar-placeholder></div>
+      <nav class="main-nav" id="main-nav" role="navigation" aria-label="Main navigation">
+        <ul class="nav-list">
+          <li><a href="index.html" class="nav-link" data-page="home">Home</a></li>
+          <li><a href="pokedex.html" class="nav-link" data-page="pokedex">Pokédex</a></li>
+          <li><a href="pokemon.html" class="nav-link" data-page="pokemon">Detail</a></li>
+          <li><a href="types.html" class="nav-link" data-page="types">Types</a></li>
+        </ul>
+        <div class="nav-controls">
+          <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode" aria-pressed="false">
+            <span class="theme-toggle-label">☀</span>
+            <span class="theme-toggle-btn" aria-hidden="true"></span>
+          </button>
+          <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false" aria-controls="main-nav">
+            <span class="hamburger-line" aria-hidden="true"></span>
+            <span class="hamburger-line" aria-hidden="true"></span>
+            <span class="hamburger-line" aria-hidden="true"></span>
+          </button>
+        </div>
+      </nav>
     </div>
   </header>
 
   <main class="main-content">
     <div class="container">
-      <!-- Typewriter Dialogue Intro -->
-      <section class="dialogue-box" aria-live="polite">
-        <p class="dialogue-text" id="typewriter-text"></p>
-        <span class="dialogue-arrow" aria-hidden="true">▼</span>
-      </section>
-
       <!-- Hero + Featured Side by Side -->
       <div class="hero-featured-wrapper">
         <!-- Hero Section -->
@@ -37,7 +49,6 @@
                 <a href="types.html" class="btn btn-lg btn-secondary">TYPE CHART</a>
               </div>
             </div>
-            <span class="dialogue-arrow hero-arrow" aria-hidden="true">▼</span>
           </div>
         </section>
 
@@ -106,130 +117,125 @@
     </div>
   </main>
 
-  <footer data-footer-placeholder></footer>
+  <footer class="site-footer" role="contentinfo">
+    <div class="footer-content">
+      <p class="footer-disclaimer">
+        Fan-made project. Not affiliated with Nintendo, Creatures Inc., GAME FREAK inc., or The Pokémon Company.
+        Pokémon and all related names are their respective trademarks.
+      </p>
+      <div class="footer-links">
+        <a href="https://pokeapi.co/" target="_blank" rel="noopener">PokéAPI</a>
+        <a href="https://github.com/PokeAPI/sprites" target="_blank" rel="noopener">Sprites</a>
+        <a href="https://fonts.google.com/specimen/Press+Start+2P" target="_blank" rel="noopener">Press Start 2P</a>
+        <a href="https://fonts.google.com/specimen/Pixelify+Sans" target="_blank" rel="noopener">Pixelify Sans</a>
+      </div>
+    </div>
+  </footer>
 
   <script src="js/data.js"></script>
-  <script src="js/main.js"></script>
+  <script src="js/utils.js"></script>
   <script>
-    // Home page specific logic
-    (function() {
-      'use strict';
+    // ==========================================================================
+    // Home Page Logic - Uses shared utils
+    // ==========================================================================
 
-      // Helper to create sprite fallback chain (same as pokedex.js/pokemon.js)
-      // Use preferGen8: false since Gen 1 Pokémon don't have Gen 8 menu icons
-      function createSpriteHtml(pokemonId, pokemonName) {
-        const urls = window.PixelDex.getSpriteUrl(pokemonId, { preferGen8: false });
-        let html = '';
-        urls.forEach((url, i) => {
-          const isLast = i === urls.length - 1;
-          html += `<img src="${url}" alt="${pokemonName}" class="card-image" loading="lazy" ${i > 0 ? 'style="display:none"' : ''} onerror="this.style.display='none'; ${isLast ? '' : `this.parentElement.querySelectorAll('img')[${i+1}].style.display='block'`}">`;
-        });
-        return html;
-      }
+    // Featured Pokémon - Pikachu
+    function renderFeatured() {
+      const featuredGrid = document.getElementById('featured-grid');
+      if (!featuredGrid || !window.POKEMON) return;
 
-      // Initialize when DOM is ready
-      function init() {
-        // Typewriter text
-        const introText = "Welcome to PixelDex! Your pocket-sized Pokédex with retro GBA/NDS style. Choose your skin, browse the Pokédex, check type matchups, and catch 'em all!";
-        const typewriterEl = document.getElementById('typewriter-text');
+      const pokemon = window.POKEMON.find(p => p.id === 25); // Pikachu
+      if (!pokemon) return;
 
-        // Start typewriter after a brief delay
-        setTimeout(() => {
-          if (window.PixelDex && window.PixelDex.initTypewriter) {
-            window.PixelDex.initTypewriter(typewriterEl, introText, 25);
-          }
-        }, 500);
-
-        // Featured Pokémon - show only Pikachu
-        const featuredGrid = document.getElementById('featured-grid');
-        if (featuredGrid && window.POKEMON && window.PixelDex) {
-          const pokemon = window.POKEMON.find(p => p.id === 25); // Pikachu
-          if (pokemon) {
-            const card = document.createElement('article');
-            card.className = 'card';
-            card.style.cursor = 'pointer';
-            card.setAttribute('role', 'listitem');
-            card.setAttribute('tabindex', '0');
-            card.addEventListener('click', () => {
-              window.location.href = `pokemon.html?id=${pokemon.id}`;
-            });
-            card.addEventListener('keydown', (e) => {
-              if (e.key === 'Enter' || e.key === ' ') {
-                e.preventDefault();
-                window.location.href = `pokemon.html?id=${pokemon.id}`;
-              }
-            });
-
-            const spriteHtml = createSpriteHtml(pokemon.id, pokemon.name);
-
-            card.innerHTML = `
-              <div class="card-inner">
-                <div style="position: relative; width: 100%; aspect-ratio: 1;">
-                  ${spriteHtml}
-                </div>
-                <h3 class="card-title">${window.PixelDex.capitalize(pokemon.name)}</h3>
-                <p class="card-id">#${String(pokemon.id).padStart(3, '0')}</p>
-                <div class="card-types">
-                  ${pokemon.types.map(t => `<span class="type-badge ${t}">${window.PixelDex.capitalize(t)}</span>`).join('')}
-                </div>
-              </div>
-            `;
-            featuredGrid.appendChild(card);
-          }
+      const card = document.createElement('article');
+      card.className = 'card';
+      card.style.cursor = 'pointer';
+      card.setAttribute('role', 'listitem');
+      card.setAttribute('tabindex', '0');
+      card.addEventListener('click', () => {
+        window.location.href = `pokemon.html?id=${pokemon.id}`;
+      });
+      card.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          window.location.href = `pokemon.html?id=${pokemon.id}`;
         }
+      });
 
-        // Starter Picks - Bulbasaur, Charmander, Squirtle
-        const starterGrid = document.getElementById('starter-grid');
-        const starterIds = [1, 4, 7];
-        if (starterGrid && window.POKEMON && window.PixelDex) {
-          starterIds.forEach(id => {
-            const pokemon = window.POKEMON.find(p => p.id === id);
-            if (!pokemon) return;
+      const spriteHtml = window.PixelDexUtils.createSpriteHtml(pokemon.id, pokemon.name);
 
-            const card = document.createElement('a');
-            card.className = 'card';
-            card.href = `pokemon.html?id=${pokemon.id}`;
-            card.setAttribute('role', 'listitem');
+      card.innerHTML = `
+        <div class="card-inner">
+          <div style="position: relative; width: 100%; aspect-ratio: 1;">
+            ${spriteHtml}
+          </div>
+          <h3 class="card-title">${window.PixelDexUtils.capitalize(pokemon.name)}</h3>
+          <p class="card-id">#${String(pokemon.id).padStart(3, '0')}</p>
+          <div class="card-types">
+            ${pokemon.types.map(t => `<span class="type-badge ${t}">${window.PixelDexUtils.capitalize(t)}</span>`).join('')}
+          </div>
+        </div>
+      `;
+      featuredGrid.appendChild(card);
+    }
 
-            const spriteHtml = createSpriteHtml(pokemon.id, pokemon.name);
+    // Starter Picks - Bulbasaur, Charmander, Squirtle
+    function renderStarters() {
+      const starterGrid = document.getElementById('starter-grid');
+      const starterIds = [1, 4, 7];
+      if (!starterGrid || !window.POKEMON) return;
 
-            card.innerHTML = `
-              <div class="card-inner">
-                <div style="position: relative; width: 100%; aspect-ratio: 1;">
-                  ${spriteHtml}
-                </div>
-                <h3 class="card-title">${window.PixelDex.capitalize(pokemon.name)}</h3>
-                <p class="card-id">#${String(pokemon.id).padStart(3, '0')}</p>
-                <div class="card-types">
-                  ${pokemon.types.map(t => `<span class="type-badge ${t}">${window.PixelDex.capitalize(t)}</span>`).join('')}
-                </div>
-              </div>
-            `;
-            starterGrid.appendChild(card);
-          });
-        }
+      starterIds.forEach(id => {
+        const pokemon = window.POKEMON.find(p => p.id === id);
+        if (!pokemon) return;
 
-        // Type Chart Preview - all 18 types
-        const typeBadges = document.getElementById('type-badges');
-        const allTypes = ['normal', 'fire', 'water', 'electric', 'grass', 'ice', 'fighting', 'poison', 'ground', 'flying', 'psychic', 'bug', 'rock', 'ghost', 'dragon', 'dark', 'steel', 'fairy'];
-        if (typeBadges && window.PixelDex) {
-          allTypes.forEach(type => {
-            const span = document.createElement('span');
-            span.className = `type-badge ${type}`;
-            span.textContent = window.PixelDex.capitalize(type);
-            span.setAttribute('role', 'listitem');
-            typeBadges.appendChild(span);
-          });
-        }
-      }
+        const card = document.createElement('a');
+        card.className = 'card';
+        card.href = `pokemon.html?id=${pokemon.id}`;
+        card.setAttribute('role', 'listitem');
 
-      // Run init when DOM is ready
-      if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', init);
-      } else {
-        init();
-      }
-    })();
+        const spriteHtml = window.PixelDexUtils.createSpriteHtml(pokemon.id, pokemon.name);
+
+        card.innerHTML = `
+          <div class="card-inner">
+            <div style="position: relative; width: 100%; aspect-ratio: 1;">
+              ${spriteHtml}
+            </div>
+            <h3 class="card-title">${window.PixelDexUtils.capitalize(pokemon.name)}</h3>
+            <p class="card-id">#${String(pokemon.id).padStart(3, '0')}</p>
+            <div class="card-types">
+              ${pokemon.types.map(t => `<span class="type-badge ${t}">${window.PixelDexUtils.capitalize(t)}</span>`).join('')}
+            </div>
+          </div>
+        `;
+        starterGrid.appendChild(card);
+      });
+    }
+
+    // Type Chart Preview - all 18 types
+    function renderTypeBadges() {
+      const typeBadges = document.getElementById('type-badges');
+      const allTypes = ['normal', 'fire', 'water', 'electric', 'grass', 'ice', 'fighting', 'poison', 'ground', 'flying', 'psychic', 'bug', 'rock', 'ghost', 'dragon', 'dark', 'steel', 'fairy'];
+      if (!typeBadges) return;
+
+      allTypes.forEach(type => {
+        const span = document.createElement('span');
+        span.className = `type-badge ${type}`;
+        span.textContent = window.PixelDexUtils.capitalize(type);
+        span.setAttribute('role', 'listitem');
+        typeBadges.appendChild(span);
+      });
+    }
+
+    // Initialize everything when DOM is ready
+    document.addEventListener('DOMContentLoaded', () => {
+      window.PixelDexUtils.initTheme();
+      window.PixelDexUtils.initHamburger();
+      window.PixelDexUtils.highlightCurrentPage();
+      renderFeatured();
+      renderStarters();
+      renderTypeBadges();
+    });
   </script>
 </body>
 </html>

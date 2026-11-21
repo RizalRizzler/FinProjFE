@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-skin="gba">
+<html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,7 +11,25 @@
   <header class="site-header">
     <div class="header-inner">
       <h1 class="site-title"><a href="index.html">PIXELDEX</a></h1>
-      <div data-navbar-placeholder></div>
+      <nav class="main-nav" id="main-nav" role="navigation" aria-label="Main navigation">
+        <ul class="nav-list">
+          <li><a href="index.html" class="nav-link" data-page="home">Home</a></li>
+          <li><a href="pokedex.html" class="nav-link" data-page="pokedex">Pokédex</a></li>
+          <li><a href="pokemon.html" class="nav-link" data-page="pokemon">Detail</a></li>
+          <li><a href="types.html" class="nav-link" data-page="types">Types</a></li>
+        </ul>
+        <div class="nav-controls">
+          <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode" aria-pressed="false">
+            <span class="theme-toggle-label">☀</span>
+            <span class="theme-toggle-btn" aria-hidden="true"></span>
+          </button>
+          <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false" aria-controls="main-nav">
+            <span class="hamburger-line" aria-hidden="true"></span>
+            <span class="hamburger-line" aria-hidden="true"></span>
+            <span class="hamburger-line" aria-hidden="true"></span>
+          </button>
+        </div>
+      </nav>
     </div>
   </header>
 
@@ -81,10 +99,23 @@
     </div>
   </main>
 
-  <footer data-footer-placeholder></footer>
+  <footer class="site-footer" role="contentinfo">
+    <div class="footer-content">
+      <p class="footer-disclaimer">
+        Fan-made project. Not affiliated with Nintendo, Creatures Inc., GAME FREAK inc., or The Pokémon Company.
+        Pokémon and all related names are their respective trademarks.
+      </p>
+      <div class="footer-links">
+        <a href="https://pokeapi.co/" target="_blank" rel="noopener">PokéAPI</a>
+        <a href="https://github.com/PokeAPI/sprites" target="_blank" rel="noopener">Sprites</a>
+        <a href="https://fonts.google.com/specimen/Press+Start+2P" target="_blank" rel="noopener">Press Start 2P</a>
+        <a href="https://fonts.google.com/specimen/Pixelify+Sans" target="_blank" rel="noopener">Pixelify Sans</a>
+      </div>
+    </div>
+  </footer>
 
   <script src="js/data.js"></script>
-  <script src="js/main.js"></script>
+  <script src="js/utils.js"></script>
   <script src="js/pokedex.js"></script>
 </body>
 </html>

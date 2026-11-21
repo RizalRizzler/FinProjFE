@@ -1,177 +1,176 @@
 /**
- * PixelDex - Pokémon Detail Page Logic
+ * PixelDex - Pokémon Detail Page Logic (Simplified)
  * Handles: URL param parsing, detail rendering, prev/next navigation
+ * Uses window.PixelDexUtils for shared functionality
  */
 
-(function() {
-  'use strict';
+// ==========================================================================
+// State
+// ==========================================================================
 
-  // ==========================================================================
-  // State
-  // ==========================================================================
+let currentPokemon = null;
+let currentIndex = -1;
+const container = document.getElementById('pokemon-detail');
 
-  let currentPokemon = null;
-  let currentIndex = -1;
+// ==========================================================================
+// Event Handlers
+// ==========================================================================
 
-  // ==========================================================================
-  // DOM Elements
-  // ==========================================================================
+function handleFavoriteClick(e) {
+  const favBtn = e.target.closest('[data-favorite-btn]');
+  if (!favBtn || !currentPokemon) return;
 
-  const container = document.getElementById('pokemon-detail');
+  e.preventDefault();
+  e.stopPropagation();
 
-  // ==========================================================================
-  // Initialization
-  // ==========================================================================
+  window.PixelDexUtils.toggleFavorite(currentPokemon.id);
+}
 
-  function init() {
-    if (!window.POKEMON) {
-      showError('Pokémon data not loaded');
-      return;
-    }
+// ==========================================================================
+// Rendering
+// ==========================================================================
 
-    const id = parseInt(window.PixelDex.getUrlParam('id'), 10);
+function renderDetail() {
+  if (!currentPokemon || !container) return;
 
-    if (!id || id < 1 || id > window.POKEMON.length) {
-      showError('Invalid Pokémon ID. Please return to the <a href="pokedex.html">Pokédex</a>.');
-      return;
-    }
+  const p = currentPokemon;
 
-    currentIndex = window.POKEMON.findIndex(p => p.id === id);
-    if (currentIndex === -1) {
-      showError('Pokémon not found. Please return to the <a href="pokedex.html">Pokédex</a>.');
-      return;
-    }
+  // Stat bars
+  const statsHtml = `
+    ${window.PixelDexUtils.createStatBar('HP', p.stats.hp)}
+    ${window.PixelDexUtils.createStatBar('Attack', p.stats.attack)}
+    ${window.PixelDexUtils.createStatBar('Defense', p.stats.defense)}
+    ${window.PixelDexUtils.createStatBar('Sp. Atk', p.stats.spatk)}
+    ${window.PixelDexUtils.createStatBar('Sp. Def', p.stats.spdef)}
+    ${window.PixelDexUtils.createStatBar('Speed', p.stats.speed)}
+  `;
 
-    currentPokemon = window.POKEMON[currentIndex];
-    renderDetail();
-  }
+  // Abilities
+  const abilitiesHtml = p.abilities.map(a => `
+    <span class="type-badge ${a.hidden ? 'fairy' : 'normal'}" style="background: ${a.hidden ? 'var(--type-fairy)' : 'var(--type-normal)'};">
+      ${window.PixelDexUtils.capitalize(a.name.replace('-', ' '))}${a.hidden ? ' (Hidden)' : ''}
+    </span>
+  `).join('');
 
-  // ==========================================================================
-  // Rendering
-  // ==========================================================================
+  // Types
+  const typesHtml = p.types.map(t => `
+    <span class="type-badge ${t}">${window.PixelDexUtils.capitalize(t)}</span>
+  `).join('');
 
-  function renderDetail() {
-    if (!currentPokemon || !container) return;
+  // Favorite button (create without click handler - we use event delegation)
+  const favBtn = window.PixelDexUtils.createFavoriteButton(p.id);
+  // Remove the click handler since we use event delegation
+  const newFavBtn = favBtn.cloneNode(true);
+  // We need to remove the old event listener - but since we use outerHTML, it's already lost
+  // Just use the HTML without the handler
 
-    const p = currentPokemon;
-    const spriteUrls = window.PixelDex.getSpriteUrl(p.id);
+  // Prev/Next buttons
+  const prevId = currentIndex > 0 ? window.POKEMON[currentIndex - 1].id : null;
+  const nextId = currentIndex < window.POKEMON.length - 1 ? window.POKEMON[currentIndex + 1].id : null;
 
-    // Build sprite fallback chain
-    let spriteHtml = '';
-    spriteUrls.forEach((url, i) => {
-      const isLast = i === spriteUrls.length - 1;
-      spriteHtml += `<img src="${url}" alt="${p.name}" class="detail-sprite" loading="lazy" ${i > 0 ? 'style="display:none"' : ''} onerror="this.style.display='none'; ${isLast ? '' : `this.parentElement.querySelectorAll('img')[${i+1}].style.display='block'`}">`;
-    });
-
-    // Stat bars
-    const statsHtml = `
-      ${window.PixelDex.createStatBar('HP', p.stats.hp)}
-      ${window.PixelDex.createStatBar('Attack', p.stats.attack)}
-      ${window.PixelDex.createStatBar('Defense', p.stats.defense)}
-      ${window.PixelDex.createStatBar('Sp. Atk', p.stats.spatk)}
-      ${window.PixelDex.createStatBar('Sp. Def', p.stats.spdef)}
-      ${window.PixelDex.createStatBar('Speed', p.stats.speed)}
-    `;
-
-    // Abilities
-    const abilitiesHtml = p.abilities.map(a => `
-      <span class="type-badge ${a.hidden ? 'fairy' : 'normal'}" style="background: ${a.hidden ? 'var(--type-fairy)' : 'var(--type-normal)'};">
-        ${window.PixelDex.capitalize(a.name.replace('-', ' '))}${a.hidden ? ' (Hidden)' : ''}
-      </span>
-    `).join('');
-
-    // Types
-    const typesHtml = p.types.map(t => `
-      <span class="type-badge ${t}">${window.PixelDex.capitalize(t)}</span>
-    `).join('');
-
-    // Favorite button for detail page
-    const favBtnHtml = `<button class="favorite-btn detail-fav-btn" data-favorite-btn data-pokemon-id="${p.id}" aria-label="${window.PixelDex.isFavorite(p.id) ? 'Remove from favorites' : 'Add to favorites'}" aria-pressed="${window.PixelDex.isFavorite(p.id)}"><span class="favorite-icon" aria-hidden="true">${window.PixelDex.isFavorite(p.id) ? '♥' : '♡'}</span></button>`;
-
-    // Prev/Next buttons
-    const prevId = currentIndex > 0 ? window.POKEMON[currentIndex - 1].id : null;
-    const nextId = currentIndex < window.POKEMON.length - 1 ? window.POKEMON[currentIndex + 1].id : null;
-
-    container.innerHTML = `
-      <article class="pokemon-detail">
-        <header class="detail-header">
-          <div style="position: relative; width: 120px; height: 120px; flex-shrink: 0;">
-            ${spriteHtml}
-          </div>
-          <div class="detail-info">
-            <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-2); width: 100%;">
-              <div>
-                <h1 class="detail-name">${window.PixelDex.capitalize(p.name)}</h1>
-                <p class="detail-id">#${String(p.id).padStart(3, '0')} • ${p.genName} (Gen ${p.gen})</p>
-                <div class="detail-types">${typesHtml}</div>
-              </div>
-              ${favBtnHtml}
+  container.innerHTML = `
+    <article class="pokemon-detail">
+      <header class="detail-header">
+        <div class="detail-sprite-wrapper">
+          ${window.PixelDexUtils.createSpriteHtml(p.id, p.name)}
+        </div>
+        <div class="detail-info">
+          <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-2); width: 100%;">
+            <div>
+              <h1 class="detail-name">${window.PixelDexUtils.capitalize(p.name)}</h1>
+              <p class="detail-id">#${String(p.id).padStart(3, '0')} • ${p.genName} (Gen ${p.gen})</p>
+              <div class="detail-types">${typesHtml}</div>
             </div>
+            <div>${favBtn.outerHTML}</div>
           </div>
-        </header>
+        </div>
+      </header>
 
-        <section class="detail-section" aria-labelledby="stats-heading">
-          <h2 id="stats-heading" class="detail-section-title">Base Stats</h2>
-          <div class="stats-container">${statsHtml}</div>
-          <p style="margin-top: var(--space-2); font-size: 12px; color: var(--color-text-muted);">
-            Total: <strong>${Object.values(p.stats).reduce((a, b) => a + b, 0)}</strong>
-          </p>
-        </section>
+      <section class="detail-section" aria-labelledby="stats-heading">
+        <h2 id="stats-heading" class="detail-section-title">Base Stats</h2>
+        <div class="stats-container">${statsHtml}</div>
+        <p style="margin-top: var(--space-2); font-size: 12px; color: var(--color-text-muted);">
+          Total: <strong>${Object.values(p.stats).reduce((a, b) => a + b, 0)}</strong>
+        </p>
+      </section>
 
-        <section class="detail-section" aria-labelledby="abilities-heading">
-          <h2 id="abilities-heading" class="detail-section-title">Abilities</h2>
-          <div class="card-types" style="justify-content: flex-start;">${abilitiesHtml}</div>
-        </section>
+      <section class="detail-section" aria-labelledby="abilities-heading">
+        <h2 id="abilities-heading" class="detail-section-title">Abilities</h2>
+        <div class="card-types" style="justify-content: flex-start;">${abilitiesHtml}</div>
+      </section>
 
-        <section class="detail-section" aria-labelledby="physical-heading">
-          <h2 id="physical-heading" class="detail-section-title">Physical Data</h2>
-          <div class="flex gap-3 flex-wrap" style="font-size: 14px;">
-            <div><strong>Height:</strong> ${window.PixelDex.formatHeight(p.height)}</div>
-            <div><strong>Weight:</strong> ${window.PixelDex.formatWeight(p.weight)}</div>
-          </div>
-        </section>
+      <section class="detail-section" aria-labelledby="physical-heading">
+        <h2 id="physical-heading" class="detail-section-title">Physical Data</h2>
+        <div class="flex gap-3 flex-wrap" style="font-size: 14px;">
+          <div><strong>Height:</strong> ${window.PixelDexUtils.formatHeight(p.height)}</div>
+          <div><strong>Weight:</strong> ${window.PixelDexUtils.formatWeight(p.weight)}</div>
+        </div>
+      </section>
 
-        <nav class="detail-nav" aria-label="Pokémon navigation">
-          ${prevId
-            ? `<a href="pokemon.html?id=${prevId}" class="btn btn-secondary">← Previous</a>`
-            : `<button class="btn btn-secondary disabled" disabled aria-label="Previous (first Pokémon)">← Previous</button>`
-          }
-          <a href="pokedex.html" class="btn">Back to Pokédex</a>
-          ${nextId
-            ? `<a href="pokemon.html?id=${nextId}" class="btn btn-secondary">Next →</a>`
-            : `<button class="btn btn-secondary disabled" disabled aria-label="Next (last Pokémon)">Next →</button>`
-          }
-        </nav>
-      </article>
-    `;
-
-    // Initialize favorite button after rendering
-    window.PixelDex.initFavoriteButtons();
-
-    // Update page title
-    document.title = `PixelDex - ${window.PixelDex.capitalize(p.name)} (#${String(p.id).padStart(3, '0')})`;
-  }
-
-  function showError(message) {
-    if (!container) return;
-    container.innerHTML = `
-      <div class="error-message" role="alert">
-        ${message}
-      </div>
-      <p class="text-center mt-3">
+      <nav class="detail-nav" aria-label="Pokémon navigation">
+        ${prevId
+          ? `<a href="pokemon.html?id=${prevId}" class="btn btn-secondary">← Previous</a>`
+          : `<button class="btn btn-secondary" disabled aria-label="Previous (first Pokémon)">← Previous</button>`
+        }
         <a href="pokedex.html" class="btn">Back to Pokédex</a>
-      </p>
-    `;
+        ${nextId
+          ? `<a href="pokemon.html?id=${nextId}" class="btn btn-secondary">Next →</a>`
+          : `<button class="btn btn-secondary" disabled aria-label="Next (last Pokémon)">Next →</button>`
+        }
+      </nav>
+    </article>
+  `;
+
+  // Update page title
+  document.title = `PixelDex - ${window.PixelDexUtils.capitalize(p.name)} (#${String(p.id).padStart(3, '0')})`;
+}
+
+// ==========================================================================
+// Initialization
+// ==========================================================================
+
+function init() {
+  if (!window.POKEMON) {
+    showError('Pokémon data not loaded');
+    return;
   }
 
-  // ==========================================================================
-  // Initialize
-  // ==========================================================================
+  const id = parseInt(window.PixelDexUtils.getUrlParam('id'), 10);
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init);
-  } else {
-    init();
+  if (!id || id < 1 || id > window.POKEMON.length) {
+    showError('Invalid Pokémon ID. Please return to the <a href="pokedex.html">Pokédex</a>.');
+    return;
   }
 
-})();
+  currentIndex = window.POKEMON.findIndex(p => p.id === id);
+  if (currentIndex === -1) {
+    showError('Pokémon not found. Please return to the <a href="pokedex.html">Pokédex</a>.');
+    return;
+  }
+
+  currentPokemon = window.POKEMON[currentIndex];
+  renderDetail();
+
+  // Event delegation for favorite button (works with innerHTML rendering)
+  container.addEventListener('click', handleFavoriteClick);
+}
+
+function showError(message) {
+  if (!container) return;
+  container.innerHTML = `
+    <div class="error-message" role="alert">
+      ${message}
+    </div>
+    <p class="text-center mt-3">
+      <a href="pokedex.html" class="btn">Back to Pokédex</a>
+    </p>
+  `;
+}
+
+// Run init when DOM is ready
+document.addEventListener('DOMContentLoaded', () => {
+  window.PixelDexUtils.initTheme();
+  window.PixelDexUtils.initHamburger();
+  window.PixelDexUtils.highlightCurrentPage();
+  init();
+});
