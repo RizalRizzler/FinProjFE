@@ -1009,7 +1009,8 @@ html[data-theme="dark"] .detail-sprite {
 .type-chart {
   border-collapse: collapse;
   font-size: 10px;
-  min-width: 900px;
+  width: 100%;
+  min-width: 1000px;
 }
 
 .type-chart th,
